@@ -158,13 +158,13 @@ int main()
             BodiesCount -= 1;
             PhysicsShatter(bodiesList[BodiesCount], MousePosition, force);
         }
-
-        printf("gravityX: %f\n", gravityX);
-        DrawText(TextFormat("gravityX: %f", gravityX), 540, 10, 20, DARKGRAY);
+        
+        // printf("gravityX: %f\n", gravityX);
+        // DrawText(TextFormat("gravityX: %f", gravityX), 540, 10, 20, DARKGRAY);
 
         BeginDrawing();
             ClearBackground(RAYWHITE);
-            DrawText("CraBOOM engine - Alpha 1", 10, 40, 20, DARKGRAY);
+            DrawText("CraBOOM engine - Alpha 2", 10, 40, 20, DARKGRAY);
             DrawText("Press ESC to exit", 300, 40, 20, DARKGRAY);
             DrawText(TextFormat("Bodies: %d", BodiesCount), 950, 10, 20, DARKGRAY);
             DrawFPS(10, 10);
