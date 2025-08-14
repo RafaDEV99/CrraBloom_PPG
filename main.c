@@ -61,6 +61,17 @@ void DrawCollisionWireFrames(int count)
     }
 }
 
+// void ClearObjectsOnFall(PhysicsBody currentBody, int currentCount, float clearLimit)
+// {
+//     // TODO:
+//
+//     if (currentBody != NULL)
+//     {
+//
+//     }
+//
+// }
+
 const char* GetBodyTypeName(int bodyIndex)
 {
     switch (bodyIndex) 
@@ -119,8 +130,8 @@ int main()
     float delta;
     bool buttonFlag = false;
 
-    PhysicsBody bodiesList[PHYSAC_MAX_BODIES] = { 0 };
-    Rectangle BodieRect[PHYSAC_MAX_BODIES] = { 0 };
+    PhysicsBody bodiesList[55] = { 0 };
+    Rectangle BodieRect[55] = { 0 };
     
     bool DropEdit = false; // <-- Drop down menu 1
     int ValueDrop = RECTANGLE_BODY;
