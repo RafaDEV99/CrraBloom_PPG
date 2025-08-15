@@ -61,16 +61,16 @@ void DrawCollisionWireFrames(int count)
     }
 }
 
-// void ClearObjectsOnFall(PhysicsBody currentBody, int currentCount, float clearLimit)
-// {
-//     // TODO:
-//
-//     if (currentBody != NULL)
-//     {
-//
-//     }
-//
-// }
+void ClearObjectsOnFall(PhysicsBody currentBody, int currentCount, float clearLimit)
+{
+    // TODO:
+
+    if (currentBody != NULL)
+    {
+        // Check if the body is below the clear limit
+    }
+
+}
 
 const char* GetBodyTypeName(int bodyIndex)
 {
