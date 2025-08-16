@@ -65,9 +65,10 @@ void ClearObjectsOnFall(PhysicsBody currentBody, int currentCount, float clearLi
 {
     // TODO:
 
-    if (currentBody != NULL)
+    if (currentBody != NULL && currentBody->position.y > clearLimit)
     {
-        // Check if the body is below the clear limit
+        int bodyId = currentBody->id;
+        printf("Body fallen: %d\n", bodyId);
     }
 
 }
@@ -114,11 +115,6 @@ void DrawBodySubGui(int valueBodyIndex, float x_position, float y_position)
     // }
 }
 
-float IncreseXGravity(float gravityValue)
-{
-    return gravityValue += 0.1f;
-}
-
 int main()
 {
     // Initialization functions
@@ -161,7 +157,7 @@ int main()
         BodiesCount = GetPhysicsBodiesCount();
         MousePosition = GetMousePosition();
 
-        gravityX = IncreseXGravity(0.0f);
+        ClearObjectsOnFall(bodiesList[BodiesCount - 1], BodiesCount, WINDOW_HEIGHT);
 
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         {
@@ -170,9 +166,6 @@ int main()
             PhysicsShatter(bodiesList[BodiesCount], MousePosition, force);
         }
         
-        // printf("gravityX: %f\n", gravityX);
-        // DrawText(TextFormat("gravityX: %f", gravityX), 540, 10, 20, DARKGRAY);
-
         BeginDrawing();
             ClearBackground(RAYWHITE);
             DrawText("CraBOOM engine - Alpha 2", 10, 40, 20, DARKGRAY);
