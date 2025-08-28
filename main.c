@@ -65,12 +65,24 @@ void ClearObjectsOnFall(PhysicsBody currentBody, int currentCount, float clearLi
 {
     // TODO:
 
+    bool Fallen = false;
+
     if (currentBody != NULL && currentBody->position.y > clearLimit)
     {
         int bodyId = currentBody->id;
         printf("Body fallen: %d\n", bodyId);
+
+        Fallen = true;
     }
 
+    if (Fallen)
+    {
+        for (int i = 0; i < 16; i++)
+        {
+            DestroyPhysicsBody(currentBody);
+            currentBody = NULL;
+        }
+    }
 }
 
 const char* GetBodyTypeName(int bodyIndex)
@@ -162,8 +174,7 @@ int main()
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         {
             float force = 1.0f;
-            BodiesCount -= 1;
-            PhysicsShatter(bodiesList[BodiesCount], MousePosition, force);
+            PhysicsShatter(bodiesList[BodiesCount - 1], MousePosition, force);
         }
         
         BeginDrawing();
