@@ -77,7 +77,7 @@ void ClearObjectsOnFall(PhysicsBody currentBody, int currentCount, float clearLi
 
     if (Fallen)
     {
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < currentCount; i++)
         {
             DestroyPhysicsBody(currentBody);
             currentBody = NULL;
@@ -109,22 +109,24 @@ void DrawBodySubGui(int valueBodyIndex, float x_position, float y_position)
 
     const char* ObjectName = GetBodyTypeName(valueBodyIndex);
 
-    float WBoxWidth = 200.0f;
+    float WBoxWidth = 300.0f;
     float WBoxHeight = 200.0f;
 
     GuiWindowBox((Rectangle){x_position, y_position, WBoxWidth, WBoxHeight}, TextFormat("%s properties", ObjectName));
 
-    // switch (valueBodyIndex) 
-    // {
-    //     case RECTANGLE_BODY:
-    //         break;
-    //     case CIRCLE_BODY:
-    //         break;
-    //     case POLYGON_BODY:
-    //         break;
-    //     default:
-    //         break;
-    // }
+    // TODO: 
+    switch (valueBodyIndex) 
+    {
+        case RECTANGLE_BODY:
+            break;
+        case CIRCLE_BODY:
+            break;
+        case POLYGON_BODY:
+            break;
+        default:
+            fprintf(stderr, "can´t detect that buddy!");
+            break;
+    }
 }
 
 int main()
@@ -169,7 +171,7 @@ int main()
         BodiesCount = GetPhysicsBodiesCount();
         MousePosition = GetMousePosition();
 
-        ClearObjectsOnFall(bodiesList[BodiesCount - 1], BodiesCount, WINDOW_HEIGHT);
+        // ClearObjectsOnFall(bodiesList[BodiesCount - 1], BodiesCount, WINDOW_HEIGHT);
 
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         {
