@@ -61,6 +61,11 @@ void DrawCollisionWireFrames(int count)
     }
 }
 
+bool toggleBool(bool toggle)
+{
+    return toggle = !toggle;
+}
+
 void ClearObjectsOnFall(PhysicsBody currentBody, int currentCount, float clearLimit)
 {
     // TODO:
@@ -101,8 +106,14 @@ const char* GetBodyTypeName(int bodyIndex)
     }
 }
 
+// DrawBodySubGui() non-update varibles:
+char rectTextBuff[64] = " ";
+char circleTextBuff[64] = " ";
+
+bool editVal = false;
+
 // TODO: add more to this function :P
-void DrawBodySubGui(int valueBodyIndex, float x_position, float y_position)
+void DrawBodySubGui(int valueBodyIndex, float x_obj_position, float y_obj_position)
 {
     // NOTE: When the Object is selected (or just created), it will show a diferent GUI
     // WARNING: Its better to use the enum the provided in the enums section (You can olso include a new instanciator function)
@@ -112,12 +123,21 @@ void DrawBodySubGui(int valueBodyIndex, float x_position, float y_position)
     float WBoxWidth = 300.0f;
     float WBoxHeight = 200.0f;
 
-    GuiWindowBox((Rectangle){x_position, y_position, WBoxWidth, WBoxHeight}, TextFormat("%s properties", ObjectName));
+    GuiWindowBox((Rectangle){10.0f, 490.0f, WBoxWidth, WBoxHeight}, TextFormat("%s properties", ObjectName));
+
+    char valueBoxTextX[16] = "X ";
+    char valueBoxTextY[16] = "Y ";
+
+    float value = 0.0f;
+
+    toggleBool(editVal);
 
     // TODO: 
     switch (valueBodyIndex) 
     {
         case RECTANGLE_BODY:
+            GuiValueBoxFloat((Rectangle){30, 525, 120, 40}, valueBoxTextX, rectTextBuff, &value, editVal);
+            // GuiValueBoxFloat((Rectangle){175, 525, 120, 40}, valueBoxTextY, valueBuff, 0, true);
             break;
         case CIRCLE_BODY:
             break;
@@ -190,8 +210,8 @@ int main()
             {
                 buttonFlag = !buttonFlag;
             }
-            
-            DrawBodySubGui(ValueDrop, 10, 490);
+
+            DrawBodySubGui(ValueDrop, 0, 0);
 
             if (buttonFlag == true)
             {
