@@ -61,11 +61,6 @@ void DrawCollisionWireFrames(int count)
     }
 }
 
-bool toggleBool(bool toggle)
-{
-    return toggle = !toggle;
-}
-
 void ClearObjectsOnFall(PhysicsBody currentBody, int currentCount, float clearLimit)
 {
     // TODO:
@@ -107,8 +102,9 @@ const char* GetBodyTypeName(int bodyIndex)
 }
 
 // DrawBodySubGui() non-update varibles:
-char rectTextBuff[64] = " ";
+char rectTextBuffX[64] = " ";
 char circleTextBuff[64] = " ";
+char textbuffY[64] = " ";
 
 bool editVal = false;
 
@@ -130,14 +126,13 @@ void DrawBodySubGui(int valueBodyIndex, float x_obj_position, float y_obj_positi
 
     float value = 0.0f;
 
-    toggleBool(editVal);
-
     // TODO: 
     switch (valueBodyIndex) 
     {
         case RECTANGLE_BODY:
-            GuiValueBoxFloat((Rectangle){30, 525, 120, 40}, valueBoxTextX, rectTextBuff, &value, editVal);
-            // GuiValueBoxFloat((Rectangle){175, 525, 120, 40}, valueBoxTextY, valueBuff, 0, true);
+            if (GuiValueBoxFloat((Rectangle){30, 525, 120, 40}, valueBoxTextX, rectTextBuffX, &value, editVal))
+                editVal = !editVal;
+            GuiValueBoxFloat((Rectangle){175, 525, 120, 40}, valueBoxTextY, textbuffY, 0, editVal);
             break;
         case CIRCLE_BODY:
             break;
