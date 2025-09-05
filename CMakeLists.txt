@@ -25,4 +25,3 @@ find_package(raylib REQUIRED)
 # FetchContent_MakeAvailable(box2d)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
-
