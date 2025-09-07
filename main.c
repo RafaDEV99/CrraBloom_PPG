@@ -102,9 +102,8 @@ const char* GetBodyTypeName(int bodyIndex)
 }
 
 // DrawBodySubGui() non-update varibles:
-char rectTextBuffX[64] = " ";
+char rectTextBuff[64] = " ";
 char circleTextBuff[64] = " ";
-char textbuffY[64] = " ";
 
 bool editVal = false;
 
@@ -124,15 +123,15 @@ void DrawBodySubGui(int valueBodyIndex, float x_obj_position, float y_obj_positi
     char valueBoxTextX[16] = "X ";
     char valueBoxTextY[16] = "Y ";
 
+    char valueBuff[64];
     float value = 0.0f;
 
     // TODO: 
     switch (valueBodyIndex) 
     {
         case RECTANGLE_BODY:
-            if (GuiValueBoxFloat((Rectangle){30, 525, 120, 40}, valueBoxTextX, rectTextBuffX, &value, editVal))
-                editVal = !editVal;
-            GuiValueBoxFloat((Rectangle){175, 525, 120, 40}, valueBoxTextY, textbuffY, 0, editVal);
+            GuiValueBoxFloat((Rectangle){30, 525, 120, 40}, valueBoxTextX, rectTextBuff, &value, toggleBool());
+            // GuiValueBoxFloat((Rectangle){175, 525, 120, 40}, valueBoxTextY, valueBuff, 0, true);
             break;
         case CIRCLE_BODY:
             break;
