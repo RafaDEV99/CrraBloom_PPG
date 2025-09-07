@@ -178,12 +178,6 @@ int main()
 
         // ClearObjectsOnFall(bodiesList[BodiesCount - 1], BodiesCount, WINDOW_HEIGHT);
 
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-        {
-            float force = 1.0f;
-            PhysicsShatter(bodiesList[BodiesCount - 1], MousePosition, force);
-        }
-        
         BeginDrawing();
             ClearBackground(RAYWHITE);
             DrawText("CraBOOM engine - Alpha 3", 10, 40, 20, DARKGRAY);
