@@ -28,6 +28,8 @@
 #define GRAVITY_Y  9.8f
 #define GRAVITY_X  0.0f
 
+#define MAX_FPS    60
+
 // Enums
 enum ObjectType
 {
@@ -144,7 +146,7 @@ int main()
     // Initialization functions
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
     InitPhysics();
-    SetTargetFPS(60);
+    SetTargetFPS(MAX_FPS);
 
     // NOTE: Init varibles
     float delta;
