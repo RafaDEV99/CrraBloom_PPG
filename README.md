@@ -4,3 +4,7 @@ CrraBloom_PPG (or the CrraBloom Physics Program) is an open-source physics simul
 # CrraBloom_PPG dependences:
 - raylib
 - raymath (It´s included in raylib)
+
+# How to install:
+1. Clone the repository:
+´git clone´
