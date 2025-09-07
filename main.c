@@ -102,6 +102,10 @@ const char* GetBodyTypeName(int bodyIndex)
     }
 }
 
+
+bool editVal = false;
+int nonUpdateVar = 0;
+
 // TODO: add more to this function :P
 void DrawBodySubGui(int valueBodyIndex, int x_value, int y_value)
 {
@@ -122,7 +126,8 @@ void DrawBodySubGui(int valueBodyIndex, int x_value, int y_value)
     switch (valueBodyIndex) 
     {
         case RECTANGLE_BODY:
-            GuiValueBox((Rectangle){200, 200, 120, 40}, widthText, &x_value, 0, WINDOW_WIDTH, true);
+            if (GuiValueBox((Rectangle){50, 530, 120, 40}, widthText, &nonUpdateVar, 0, WINDOW_WIDTH, editVal))
+                editVal = !editVal;
             break;
         case CIRCLE_BODY:
             break;
@@ -168,6 +173,7 @@ int main()
     float gravityY = 0.0f;
 
     Vector2 MousePosition = { 0.0f, 0.0f };
+
 
     while (!WindowShouldClose()) 
     {
