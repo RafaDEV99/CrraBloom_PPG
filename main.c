@@ -102,14 +102,8 @@ const char* GetBodyTypeName(int bodyIndex)
     }
 }
 
-// DrawBodySubGui() non-update varibles:
-char rectTextBuff[64] = " ";
-char circleTextBuff[64] = " ";
-
-bool editVal = false;
-
 // TODO: add more to this function :P
-void DrawBodySubGui(int valueBodyIndex, float x_obj_position, float y_obj_position)
+void DrawBodySubGui(int valueBodyIndex, int x_value, int y_value)
 {
     // NOTE: When the Object is selected (or just created), it will show a diferent GUI
     // WARNING: Its better to use the enum the provided in the enums section (You can olso include a new instanciator function)
@@ -128,7 +122,7 @@ void DrawBodySubGui(int valueBodyIndex, float x_obj_position, float y_obj_positi
     switch (valueBodyIndex) 
     {
         case RECTANGLE_BODY:
-            // GuiValueBox({}, const char *text, int *value, 0, 0, true);
+            GuiValueBox((Rectangle){200, 200, 120, 40}, widthText, &x_value, 0, WINDOW_WIDTH, true);
             break;
         case CIRCLE_BODY:
             break;
