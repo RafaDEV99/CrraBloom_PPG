@@ -7,4 +7,18 @@ CrraBloom_PPG (or the CrraBloom Physics Program) is an open-source physics simul
 
 # How to install:
 1. Clone the repository:
-´git clone´
+```
+git clone https://github.com/RafaDEV99/CrraBloom_PPG.git
+```
+2. Create a build directory:
+```
+mkdir build 
+```
+3. Go into the ```build``` directory and build the executable:
+```
+cd build
+cmake ..
+make
+```
+
+And that´s it for the installation! :D
