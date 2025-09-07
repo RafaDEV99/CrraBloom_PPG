@@ -1,7 +1,8 @@
 /**********************************
  *
  * CraBOOM engine THE epic physics program- Legacy code
- * Code by: @RafaDEV99 (Rafael Tangyan Guskov) :3
+ * Code by: @RafaDEV99 (Rafael) :3
+ * Thanks for all!!
  *
  *********************************/
 
@@ -120,17 +121,14 @@ void DrawBodySubGui(int valueBodyIndex, float x_obj_position, float y_obj_positi
 
     GuiWindowBox((Rectangle){10.0f, 490.0f, WBoxWidth, WBoxHeight}, TextFormat("%s properties", ObjectName));
 
-    char valueBoxTextX[16] = "X ";
-    char valueBoxTextY[16] = "Y ";
-
-    char valueBuff[64];
-    float value = 0.0f;
+    char widthText[16] = "X ";
+    char heigtText[16] = "Y ";
 
     // TODO: 
     switch (valueBodyIndex) 
     {
         case RECTANGLE_BODY:
-            GuiValueBox({}, const char *text, int *value, 0, 0, true);
+            // GuiValueBox({}, const char *text, int *value, 0, 0, true);
             break;
         case CIRCLE_BODY:
             break;
@@ -230,7 +228,7 @@ int main()
                     PhysicsBody newBody;
                     Vector2 BVector = {ValueGetX, ValueGetY}; // <-- Body Vector int
 
-                    // Temp values while I cretae all the GUI for this values
+                    // Values for the instanciator 
                     int RectHeight = 40;
                     int RectWidth = 300;
 
