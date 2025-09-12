@@ -36,9 +36,10 @@ enum ObjectType
     POLYGON_BODY,
 };
 
-// typedef struct SubGuiValues {
-//
-// } SubGui;
+// Type for handle the sub guiº
+typedef struct SubGuiValues {
+
+} SubGui;
 
 // Function yoinked from the Physac examples :3
 void DrawCollisionWireFrames(int count)
@@ -63,30 +64,6 @@ void DrawCollisionWireFrames(int count)
             }
         }
 
-    }
-}
-
-void ClearObjectsOnFall(PhysicsBody currentBody, int currentCount, float clearLimit)
-{
-    // TODO:
-
-    bool Fallen = false;
-
-    if (currentBody != NULL && currentBody->position.y > clearLimit)
-    {
-        int bodyId = currentBody->id;
-        printf("Body fallen: %d\n", bodyId);
-
-        Fallen = true;
-    }
-
-    if (Fallen)
-    {
-        for (int i = 0; i < currentCount; i++)
-        {
-            DestroyPhysicsBody(currentBody);
-            currentBody = NULL;
-        }
     }
 }
 
