@@ -130,7 +130,7 @@ void DrawBodySubGui(int valueBodyIndex, float x_obj_position, float y_obj_positi
     switch (valueBodyIndex) 
     {
         case RECTANGLE_BODY:
-            GuiValueBox({}, const char *text, int *value, 0, 0, true);
+            // GuiValueBox({}, const char *text, int *value, 0, 0, true);
             break;
         case CIRCLE_BODY:
             break;
