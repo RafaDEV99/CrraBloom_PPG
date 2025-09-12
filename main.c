@@ -164,8 +164,6 @@ int main()
         BodiesCount = GetPhysicsBodiesCount();
         MousePosition = GetMousePosition();
 
-        // ClearObjectsOnFall(bodiesList[BodiesCount - 1], BodiesCount, WINDOW_HEIGHT);
-
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         {
             float force = 1.0f;
