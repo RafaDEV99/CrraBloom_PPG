@@ -38,7 +38,9 @@ enum ObjectType
 
 // Type for handle the sub guiº
 typedef struct SubGuiValues {
-
+    Vector2 RectSize;
+    Vector2 RectPos;
+    int VertexNum;
 } SubGui;
 
 // Function yoinked from the Physac examples :3
