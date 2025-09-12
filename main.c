@@ -36,6 +36,10 @@ enum ObjectType
     POLYGON_BODY,
 };
 
+// typedef struct SubGuiValues {
+//
+// } SubGui;
+
 // Function yoinked from the Physac examples :3
 void DrawCollisionWireFrames(int count)
 {
@@ -128,7 +132,6 @@ void DrawBodySubGui(int valueBodyIndex, float x_obj_position, float y_obj_positi
     switch (valueBodyIndex) 
     {
         case RECTANGLE_BODY:
-            // GuiValueBox({}, const char *text, int *value, 0, 0, true);
             break;
         case CIRCLE_BODY:
             break;
