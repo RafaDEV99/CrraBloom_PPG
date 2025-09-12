@@ -1,10 +1,10 @@
-/**********************************
+/*************************************************************************
  *
- * CraBOOM engine THE epic physics program- Legacy code
+ * CraBOOM engine THE epic physics program- Legacy main file
  * Code by: @RafaDEV99 (Rafael) :3
- * Thanks for all!!
+ * Thanks for all!
  *
- *********************************/
+ ************************************************************************/
 
 #include <raylib.h>
 #include <raymath.h>
@@ -27,6 +27,8 @@
 
 #define GRAVITY_Y  9.8f
 #define GRAVITY_X  0.0f
+
+#define MAX_FPS    60
 
 // Enums
 enum ObjectType
@@ -85,14 +87,12 @@ const char* GetBodyTypeName(int bodyIndex)
     }
 }
 
-// DrawBodySubGui() non-update varibles:
-char rectTextBuff[64] = " ";
-char circleTextBuff[64] = " ";
 
 bool editVal = false;
+int nonUpdateVar = 0;
 
 // TODO: add more to this function :P
-void DrawBodySubGui(int valueBodyIndex, float x_obj_position, float y_obj_position)
+void DrawBodySubGui(int valueBodyIndex, int x_value, int y_value)
 {
     // NOTE: When the Object is selected (or just created), it will show a diferent GUI
     // WARNING: Its better to use the enum the provided in the enums section (You can olso include a new instanciator function)
@@ -111,6 +111,8 @@ void DrawBodySubGui(int valueBodyIndex, float x_obj_position, float y_obj_positi
     switch (valueBodyIndex) 
     {
         case RECTANGLE_BODY:
+            if (GuiValueBox((Rectangle){50, 530, 120, 40}, widthText, &nonUpdateVar, 0, WINDOW_WIDTH, editVal))
+                editVal = !editVal;
             break;
         case CIRCLE_BODY:
             break;
@@ -127,7 +129,7 @@ int main()
     // Initialization functions
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
     InitPhysics();
-    SetTargetFPS(60);
+    SetTargetFPS(MAX_FPS);
 
     // NOTE: Init varibles
     float delta;
@@ -157,6 +159,7 @@ int main()
 
     Vector2 MousePosition = { 0.0f, 0.0f };
 
+
     while (!WindowShouldClose()) 
     {
         // Update values
@@ -172,7 +175,7 @@ int main()
         
         BeginDrawing();
             ClearBackground(RAYWHITE);
-            DrawText("CraBOOM engine - Alpha 2", 10, 40, 20, DARKGRAY);
+            DrawText("CraBOOM engine - Alpha 3", 10, 40, 20, DARKGRAY);
             DrawText("Press ESC to exit", 300, 40, 20, DARKGRAY);
             DrawText(TextFormat("Bodies: %d", BodiesCount), 950, 10, 20, DARKGRAY);
             DrawFPS(10, 10);
@@ -207,8 +210,8 @@ int main()
                 {
                     PhysicsBody newBody;
                     Vector2 BVector = {ValueGetX, ValueGetY}; // <-- Body Vector int
-
-                    // Values for the instanciator 
+                  
+                    // Value references for the instanciator (Temp values for now)
                     int RectHeight = 40;
                     int RectWidth = 300;
 
