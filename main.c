@@ -111,8 +111,7 @@ void DrawBodySubGui(int valueBodyIndex, int x_value, int y_value)
     switch (valueBodyIndex) 
     {
         case RECTANGLE_BODY:
-            if (GuiValueBox((Rectangle){50, 530, 120, 40}, widthText, &nonUpdateVar, 0, WINDOW_WIDTH, editVal))
-                editVal = !editVal;
+            // GuiValueBox({}, const char *text, int *value, 0, 0, true);
             break;
         case CIRCLE_BODY:
             break;
@@ -127,6 +126,7 @@ void DrawBodySubGui(int valueBodyIndex, int x_value, int y_value)
 int main()
 {
     // Initialization functions
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
     InitPhysics();
     SetTargetFPS(MAX_FPS);
