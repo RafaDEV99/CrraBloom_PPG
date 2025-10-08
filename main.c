@@ -11,7 +11,6 @@
 #include <stdio.h>
 #include <string.h>
 
-
 // External include (from the include folder :P )
 #define PHYSAC_IMPLEMENTATION
 #include "Includes/physac.h"
