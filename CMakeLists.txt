@@ -7,12 +7,14 @@ project(CrraBloom)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Include our modules from the the Include directory
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Includes)
 
 add_executable(${PROJECT_NAME} main.c)
 
 # Packages stuff :P
 find_package(raylib REQUIRED)
+
+# TODO: Add Box2d
 
 # include(FetchContent)
 # FetchContent_Declare(
