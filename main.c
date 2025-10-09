@@ -34,14 +34,17 @@ enum ObjectType
     POLYGON_BODY,
 };
 
-// Global Values:
+// Global Values (Inseted boxes values also):
 int RectHeight = 0;
 int RectWidth = 0;
 
 int circleRad = 0;
 
 int PolySides = 0;
-int PolyRad = 0;
+int PolyRadius = 0;
+
+int ValueGetX = 0;
+int ValueGetY = 0;
 
 
 // Function yoinked from the Physac examples :3
@@ -169,9 +172,7 @@ int main()
     bool DropEdit = false; // <-- Drop down menu 1
     int ValueDrop = RECTANGLE_BODY;
 
-    // Here I store the value inserted in the value boxes X and Y:
-    int ValueGetX = 0;
-    int ValueGetY = 0;
+
 
     int GetDencity = 0;
     int BodiesCount = 0;
@@ -250,7 +251,7 @@ int main()
                             newBody = CreatePhysicsBodyCircle(BVector, circleRad, GetDencity);
                             break;
                         case POLYGON_BODY:
-                            newBody = CreatePhysicsBodyPolygon(BVector, PolyRad, PolySides, GetDencity);
+                            newBody = CreatePhysicsBodyPolygon(BVector, PolyRadius, PolySides, GetDencity);
                             break;
                         default:
                             break;
