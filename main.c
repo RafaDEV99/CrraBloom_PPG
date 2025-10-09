@@ -34,6 +34,16 @@ enum ObjectType
     POLYGON_BODY,
 };
 
+// Global Values:
+int RectHeight = 0;
+int RectWidth = 0;
+
+int circleRad = 0;
+
+int PolySides = 0;
+int PolyRad = 0;
+
+
 // Function yoinked from the Physac examples :3
 void DrawCollisionWireFrames(int count)
 {
@@ -129,7 +139,7 @@ void DrawBodySubGui(int valueBodyIndex, float x_obj_position, float y_obj_positi
     switch (valueBodyIndex) 
     {
         case RECTANGLE_BODY:
-            // GuiValueBox({}, const char *text, int *value, 0, 0, true);
+            // GuiValueBox((Rectangle){0, 0, 120, 120}, valueBoxTextX, 0, int minValue, int maxValue, bool editMode);
             break;
         case CIRCLE_BODY:
             break;
@@ -229,15 +239,6 @@ int main()
                 {
                     PhysicsBody newBody;
                     Vector2 BVector = {ValueGetX, ValueGetY}; // <-- Body Vector int
-
-                    // Temp values while I cretae all the GUI for this values
-                    int RectHeight = 40;
-                    int RectWidth = 300;
-
-                    int circleRad = 25;
-
-                    int PolySides = 5;
-                    int PolyRad = 25;
 
                     // Create a body based on the value of the drop down menu
                     switch (ValueDrop) 
