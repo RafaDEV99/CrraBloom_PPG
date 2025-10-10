@@ -8,8 +8,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Added sanitizers
 # NOTE: Only for developer testing!!
-# add_compile_options(-fsanitize=address)
-# add_link_options(-fsanitize=address)
+# Uncomment this only if you need!
+add_compile_options(-fsanitize=address)
+add_link_options(-fsanitize=address)
 
 # Include our modules from the the Include directory
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Includes)
