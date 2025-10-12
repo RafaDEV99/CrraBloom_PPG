@@ -5,6 +5,7 @@
  *
  *********************************/
 
+#include <math.h>
 #include <raylib.h>
 #include <raymath.h>
 #include <stdbool.h>
@@ -36,8 +37,8 @@ enum ObjectType
 };
 
 // Global Values (Inseted boxes values also):
-int RectHeight = 0;
-int RectWidth = 0;
+int RectHeight = 40;
+int RectWidth = 40;
 
 int circleRad = 0;
 
@@ -47,6 +48,8 @@ int PolyRadius = 0;
 int ValueGetX = 0;
 int ValueGetY = 0;
 
+PhysicsBody bodiesList[55] = { 0 };
+// TODO: Rectangle BodieRect[16] = { 0 };
 
 // Function yoinked from the Physac examples :3
 void DrawCollisionWireFrames(int count)
@@ -74,30 +77,6 @@ void DrawCollisionWireFrames(int count)
     }
 }
 
-void ClearObjectsOnFall(PhysicsBody currentBody, int currentCount, float clearLimit)
-{
-    // TODO:
-
-    bool Fallen = false;
-
-    if (currentBody != NULL && currentBody->position.y > clearLimit)
-    {
-        int bodyId = currentBody->id;
-        printf("Body fallen: %d\n", bodyId);
-
-        Fallen = true;
-    }
-
-    if (Fallen)
-    {
-        for (int i = 0; i < currentCount; i++)
-        {
-            DestroyPhysicsBody(currentBody);
-            currentBody = NULL;
-        }
-    }
-}
-
 const char* GetBodyTypeName(int bodyIndex)
 {
     switch (bodyIndex) 
@@ -114,11 +93,7 @@ const char* GetBodyTypeName(int bodyIndex)
     }
 }
 
-// DrawBodySubGui() non-update varibles:
-char rectTextBuff[64] = " ";
-char circleTextBuff[64] = " ";
-
-bool editVal = false;
+bool editVal = true;
 
 // TODO: add more to this function :P
 void DrawBodySubGui(int valueBodyIndex, float x_obj_position, float y_obj_position)
@@ -137,13 +112,13 @@ void DrawBodySubGui(int valueBodyIndex, float x_obj_position, float y_obj_positi
     char valueBoxTextY[16] = "Y ";
 
     char valueBuff[64];
-    float value = 0.0f;
+    int value = 0;
 
     // TODO: 
     switch (valueBodyIndex) 
     {
         case RECTANGLE_BODY:
-            // GuiValueBox((Rectangle){0, 0, 120, 120}, valueBoxTextX, 0, int minValue, int maxValue, bool editMode);
+            // GuiValueBox((Rectangle){x_obj_position - 20, y_obj_position - 20, 120, 50}, valueBoxTextX, &value, 0, WINDOW_WIDTH, editVal);
             break;
         case CIRCLE_BODY:
             break;
@@ -167,13 +142,9 @@ int main()
     float delta;
     bool buttonFlag = false;
 
-    PhysicsBody bodiesList[55] = { 0 };
-    Rectangle BodieRect[55] = { 0 };
     
     bool DropEdit = false; // <-- Drop down menu 1
     int ValueDrop = RECTANGLE_BODY;
-
-
 
     int GetDencity = 0;
     int BodiesCount = 0;
@@ -196,14 +167,14 @@ int main()
         BodiesCount = GetPhysicsBodiesCount();
         MousePosition = GetMousePosition();
 
-        // ClearObjectsOnFall(bodiesList[BodiesCount - 1], BodiesCount, WINDOW_HEIGHT);
-
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        if (IsKeyPressed(KEY_D))
         {
-            float force = 1.0f;
-            PhysicsShatter(bodiesList[BodiesCount - 1], MousePosition, force);
+            for (int i = 0; i < BodiesCount; i++)
+            {
+                DestroyPhysicsBody(bodiesList[i]);
+            }
         }
-        
+
         BeginDrawing();
             ClearBackground(RAYWHITE);
             DrawText("CraBOOM engine - Alpha 2", 10, 40, 20, DARKGRAY);
@@ -247,6 +218,8 @@ int main()
                     {
                         case RECTANGLE_BODY:
                             newBody = CreatePhysicsBodyRectangle(BVector, RectWidth, RectHeight, GetDencity);
+                            ValueGetX = newBody->position.x;
+                            ValueGetY = newBody->position.y;
                             break;
                         case CIRCLE_BODY:
                             newBody = CreatePhysicsBodyCircle(BVector, circleRad, GetDencity);
@@ -272,4 +245,3 @@ int main()
     CloseWindow();
     return 0;
 }
-
