@@ -1,6 +1,6 @@
 /**********************************
  *
- * CraBOOM engine THE epic physics program- Legacy code
+ * CraBOOM engine THE epic physics program - Legacy code
  * Code by: @RafaDEV99 (Rafael Tangyan Guskov)
  *
  *********************************/
