@@ -11,16 +11,16 @@ CrraBloom_PPG (or the CrraBloom Physics Program) is an open-source physics simul
 
 # How to compile:
 1. Clone the repo:
-´´´
+```
 git clone https://github.com/RafaDEV99/CrraBloom_PPG.git
 cd CrraBloom_PPG
-´´´
-2. Create a build folder:
-´´´
+```
+3. Create a build folder:
+```
 mkdir build && cd build 
-´´´
-3. Compile:
-´´´
+```
+5. Compile:
+```
 cmake ..
 make
-´´´
+```
