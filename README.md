@@ -1,5 +1,5 @@
-![GitHub Repo stars](https://img.shields.io/github/stars/:RafaDEV99/:CrraBloom_PPG)
-![GitHub followers](https://img.shields.io/github/followers/RafaDEV99)
+![GitHub Repo stars](https://img.shields.io/github/stars/:RafaDEV99/:CrraBloom_PPG?style=for-the-badge)
+![GitHub followers](https://img.shields.io/github/followers/RafaDEV99?style=for-the-badge)
 
 # CrraBloom_PPG
 CrraBloom_PPG (or the CrraBloom Physics Program) is an open-source physics simulator written in the programming language C with Raylib.
