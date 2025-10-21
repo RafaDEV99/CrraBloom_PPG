@@ -13,7 +13,7 @@ For now, CrraBloom is an **Alpha**, so if you find any bugs, please feel free to
 
 # CrraBloom_PPG dependences:
 - raylib
-- raymath (It´s included in raylib)
+- CMake
 
 # How to install:
 1. Clone the repository:
