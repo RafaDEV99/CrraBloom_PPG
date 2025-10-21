@@ -7,7 +7,7 @@ For now, CrraBloom is an **Alpha**, so if you find any bugs, please feel free to
 
 **Creator's Note**
 > [!NOTE]
-> For now, there is no build of this program. That is because the program is in alpha.
+> For now, this program has not been built. That is because the program is in alpha.
 > 
 > So, that will be soon!! :D
 
@@ -30,5 +30,7 @@ cd build
 cmake ..
 make
 ```
+
+
 
 And that´s it for the installation! 😁
