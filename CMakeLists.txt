@@ -15,10 +15,16 @@ add_link_options(-fsanitize=address)
 # Include our modules from the the Include directory
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Includes)
 
-add_executable(${PROJECT_NAME} main.c)
+add_executable(${PROJECT_NAME} test/mainTest.c)
 
 # Packages stuff :P
-find_package(raylib REQUIRED)
+include(FetchContent)
+FetchContent_Declare(
+    raylib
+    GIT_REPOSITORY https://github.com/raysan5/raylib.git
+    GIT_TAG master
+)
+FetchContent_MakeAvailable(raylib)
 
 # TODO: Add Box2d
 
@@ -33,3 +39,4 @@ find_package(raylib REQUIRED)
 # FetchContent_MakeAvailable(box2d)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
+message("RAYLIB VERSION")
