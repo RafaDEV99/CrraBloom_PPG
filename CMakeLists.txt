@@ -12,12 +12,13 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_compile_options(-fsanitize=address)
 add_link_options(-fsanitize=address)
 
+# Custon flags:
+option(BOX2D "Added box2d!" OFF)
+
 # Include our modules from the the Include directory
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Includes)
 
-add_executable(${PROJECT_NAME} test/mainTest.c)
-
-# Packages stuff :P
+# Packages stuff
 include(FetchContent)
 FetchContent_Declare(
     raylib
@@ -26,17 +27,22 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(raylib)
 
-# TODO: Add Box2d
+# TODO: Add Box2d and raylib
+if(BOX2D)
+    message("Adding Box2d and raylib!")
+    include(FetchContent)
+    FetchContent_Declare(
+    	box2d
+    	GIT_REPOSITORY https://github.com/erincatto/box2d.git
+    	GIT_TAG main
+    	GIT_SHALLOW TRUE
+    	GIT_PROGRESS TRUE
+    )
+    FetchContent_MakeAvailable(box2d)
+    target_link_libraries(${PROJECT_NAME} PRIVATE box2d)
+else()
+    message(STATUS "Box2D flag not set — only using Raylib.")
+endif()
 
-# include(FetchContent)
-# FetchContent_Declare(
-# 	box2d
-# 	GIT_REPOSITORY https://github.com/erincatto/box2d.git
-# 	GIT_TAG main
-# 	GIT_SHALLOW TRUE
-# 	GIT_PROGRESS TRUE
-# )
-# FetchContent_MakeAvailable(box2d)
-
+add_executable(${PROJECT_NAME} test/mainTest.c)
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
-message("RAYLIB VERSION")
