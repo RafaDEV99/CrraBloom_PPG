@@ -19,10 +19,12 @@ int main()
     while (!WindowShouldClose()) 
     {
         UpdateNuklear(ctx);
-        if (nk_begin(ctx, "Fist window", nk_rect(20, 75, 220, 220), 
-            NK_WINDOW_BORDER|NK_WINDOW_MINIMIZABLE|NK_WINDOW_MOVABLE))
+        if (nk_begin(ctx, "Fist window", nk_rect(20, 75, 320, 450), 
+            NK_WINDOW_BORDER|NK_WINDOW_MINIMIZABLE|NK_WINDOW_MOVABLE|NK_WINDOW_SCALABLE))
         {
-            nk_label(ctx, "Welcome to Nuklear!!", NK_TEXT_ALIGN_TOP);
+            nk_layout_row_static(ctx, 70, 200, 1);
+            nk_label(ctx, "Welcome to Nuklear!!", NK_TEXT_CENTERED|NK_TEXT_ALIGN_LEFT);
+            nk_button_label(ctx, "Yes, this a button!");
         }
         nk_end(ctx);
 
