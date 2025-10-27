@@ -27,6 +27,9 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(raylib)
 
+add_executable(${PROJECT_NAME} test/mainTest.c)
+target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
+
 # TODO: Add Box2d and raylib
 if(BOX2D)
     message("Adding Box2d and raylib!")
@@ -44,5 +47,3 @@ else()
     message(STATUS "Box2D flag not set — only using Raylib.")
 endif()
 
-add_executable(${PROJECT_NAME} test/mainTest.c)
-target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
