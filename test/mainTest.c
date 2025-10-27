@@ -12,7 +12,7 @@ int main()
     InitWindow(1080, 700, "Raygui example");
     SetTargetFPS(60);
 
-    int fontSize = 16;
+    int fontSize = 14;
     // Font font = LoadFontFromNuklear(fontSize);
     ctx = InitNuklear(fontSize);
 
@@ -35,5 +35,7 @@ int main()
         EndDrawing();
     }
 
+    UnloadNuklear(ctx);
+    CloseWindow();
     return 0;
 }
