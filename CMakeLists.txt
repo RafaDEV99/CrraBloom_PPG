@@ -6,14 +6,20 @@ project(CrraBloom)
 # Crete the export command file
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# Custon flags:
+option(BOX2D "Added box2d!" OFF)
+option(SANITIZERS "Added Sanitizers" OFF)
+
 # Added sanitizers
-# NOTE: Only for developer testing!!
-# Uncomment this only if you need!
+# NOTE: Add a SANITIZERS flag if you want sanitizers
 add_compile_options(-fsanitize=address)
 add_link_options(-fsanitize=address)
 
-# Custon flags:
-option(BOX2D "Added box2d!" OFF)
+if(SANITIZERS) # <-- Temp may change
+    message("Sanitizers on! :)")
+else()
+    message("Sanitizers off! :(")
+endif()
 
 # Include our modules from the the Include directory
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Includes)
