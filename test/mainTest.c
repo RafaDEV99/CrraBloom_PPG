@@ -1,4 +1,5 @@
 #include <raylib.h>
+#include <stdio.h>
 
 #define RAYLIB_NUKLEAR_IMPLEMENTATION
 #define RAYLIB_NUKLEAR_INCLUDE_DEFAULT_FONT
@@ -13,24 +14,35 @@ int main()
     SetTargetFPS(60);
 
     int fontSize = 14;
+
+    float testDencity = 0.0f;
+
     // Font font = LoadFontFromNuklear(fontSize);
     ctx = InitNuklear(fontSize);
+
+    int windowFlags = NK_WINDOW_SCALABLE|NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_MINIMIZABLE;
+    char windowTittle[] = "Object Creation window";
 
     while (!WindowShouldClose()) 
     {
         UpdateNuklear(ctx);
-        if (nk_begin(ctx, "Fist window", nk_rect(20, 75, 320, 450), 
-            NK_WINDOW_BORDER|NK_WINDOW_MINIMIZABLE|NK_WINDOW_MOVABLE|NK_WINDOW_SCALABLE))
+
+        printf("The object was: %f dencity\n", testDencity);
+
+        if (nk_begin_titled(ctx, "ObjWindow", windowTittle, nk_rect(20, 75, 540, 320), windowFlags))
         {
-            nk_layout_row_static(ctx, 70, 200, 1);
-            nk_label(ctx, "Welcome to Nuklear!!", NK_TEXT_CENTERED|NK_TEXT_ALIGN_LEFT);
-            nk_button_label(ctx, "Yes, this a button!");
+            nk_layout_row_static(ctx, 35, 400, 1);
+            nk_label(ctx, "Welcome to the CrraBloom creation window!", NK_TEXT_ALIGN_LEFT);
+
+            nk_layout_row_static(ctx, 35, 200, 1);
+            nk_slider_float(ctx, 0.0f, &testDencity, 100.0f, 0.1f);
         }
         nk_end(ctx);
 
         BeginDrawing();
             ClearBackground(RAYWHITE);
             DrawFPS(20, 20);
+            DrawRectangle(540, 340, 40, 40, BLUE);
             DrawNuklear(ctx);
         EndDrawing();
     }
