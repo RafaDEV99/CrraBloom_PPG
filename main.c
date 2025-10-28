@@ -93,6 +93,7 @@ const char* GetBodyTypeName(int bodyIndex)
 }
 
 bool editVal = true;
+bool editValueY = true;
 
 // TODO: add more to this function :P
 void DrawBodySubGui(int valueBodyIndex, float x_obj_position, float y_obj_position)
@@ -112,12 +113,16 @@ void DrawBodySubGui(int valueBodyIndex, float x_obj_position, float y_obj_positi
 
     char valueBuff[64];
     int value = 0;
+    int value2 = 0;
 
     // TODO: 
     switch (valueBodyIndex) 
     {
         case RECTANGLE_BODY:
-            // GuiValueBox((Rectangle){x_obj_position - 20, y_obj_position - 20, 120, 50}, valueBoxTextX, &value, 0, WINDOW_WIDTH, editVal);
+
+            // I don´t know if continue this or rewrite the code for this...
+            GuiValueBox((Rectangle){x_obj_position - 20, y_obj_position - 20, 120, 50}, valueBoxTextX, &value, 0, WINDOW_WIDTH, editVal);
+            GuiValueBox((Rectangle){x_obj_position - 40, y_obj_position - 20, 120, 50}, valueBoxTextY, &value2, 0, WINDOW_HEIGHT, editValueY);
             break;
         case CIRCLE_BODY:
             break;
