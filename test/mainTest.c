@@ -1,5 +1,7 @@
 #include <raylib.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define RAYLIB_NUKLEAR_IMPLEMENTATION
 #define RAYLIB_NUKLEAR_INCLUDE_DEFAULT_FONT
@@ -23,26 +25,34 @@ int main()
     int windowFlags = NK_WINDOW_SCALABLE|NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_MINIMIZABLE;
     char windowTittle[] = "Object Creation window";
 
+    struct nk_colorf cubeColor = ColorToNuklearF(BLUE);
+
     while (!WindowShouldClose()) 
     {
         UpdateNuklear(ctx);
 
         printf("The object was: %f dencity\n", testDencity);
 
-        if (nk_begin_titled(ctx, "ObjWindow", windowTittle, nk_rect(20, 75, 540, 320), windowFlags))
+        if (nk_begin_titled(ctx, "ObjWindow", windowTittle, nk_rect(20, 75, 340, 320), windowFlags))
         {
-            nk_layout_row_static(ctx, 35, 400, 1);
-            nk_label(ctx, "Welcome to the CrraBloom creation window!", NK_TEXT_ALIGN_LEFT);
+            nk_layout_row_static(ctx, 35, 340, 1);
+            nk_label_wrap(ctx, "Welcome to the CrraBloom creation window!");
 
             nk_layout_row_static(ctx, 35, 200, 1);
             nk_slider_float(ctx, 0.0f, &testDencity, 100.0f, 0.1f);
+
+            nk_layout_row_begin(ctx, 0, 240, 1);
+            {
+                cubeColor = nk_color_picker(ctx, cubeColor, NK_RGBA);
+            }
+            nk_layout_row_end(ctx);
         }
         nk_end(ctx);
 
         BeginDrawing();
             ClearBackground(RAYWHITE);
             DrawFPS(20, 20);
-            DrawRectangle(540, 340, 40, 40, BLUE);
+            DrawRectangle(540, 340, 40, 40, ColorFromNuklearF(cubeColor));
             DrawNuklear(ctx);
         EndDrawing();
     }
