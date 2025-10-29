@@ -10,15 +10,17 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 option(BOX2D "Added box2d!" OFF)
 option(SANITIZERS "Added Sanitizers" OFF)
 
-# Added sanitizers
-# NOTE: Add a SANITIZERS flag if you want sanitizers
-add_compile_options(-fsanitize=address)
-add_link_options(-fsanitize=address)
+# Added sanitizers like:
+# add_compile_options(-fsanitize=address)
+# add_link_options(-fsanitize=address)
 
+# NOTE: Add a SANITIZERS flag if you want sanitizers for debuging and else
 if(SANITIZERS) # <-- Temp may change
-    message("Sanitizers on! :)")
+    message("-- Sanitizers ON! :)")
+    add_compile_options(-fsanitize=address)
+    add_link_options(-fsanitize=address)
 else()
-    message("Sanitizers off! :(")
+    message("-- Sanitizers OFF! :(")
 endif()
 
 # Include our modules from the the Include directory
