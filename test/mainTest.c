@@ -41,11 +41,20 @@ int main()
             nk_layout_row_static(ctx, 35, 200, 1);
             nk_slider_float(ctx, 0.0f, &testDencity, 100.0f, 0.1f);
 
-            nk_layout_row_begin(ctx, 0, 240, 1);
+            nk_layout_row_begin(ctx, NK_STATIC, 150, 1);
             {
+                nk_layout_row_push(ctx, 150);
                 cubeColor = nk_color_picker(ctx, cubeColor, NK_RGBA);
+
             }
             nk_layout_row_end(ctx);
+
+
+            nk_layout_row_dynamic(ctx, 60, 2);
+            nk_button_label(ctx, "A usefull button!");
+            nk_button_label(ctx, "A usefull button!");
+            nk_button_label(ctx, "A usefull button!");
+            nk_button_label(ctx, "A usefull button!");
         }
         nk_end(ctx);
 
