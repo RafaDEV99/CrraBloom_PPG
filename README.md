@@ -30,7 +30,9 @@ cd build
 cmake ..
 make
 ```
-
-
-
 And that´s it for the installation! 😁
+
+> ![NOTE]
+> In the future I gess that Im going to change physics system to Box2d
+>
+> A re do of the code will be done soon...
