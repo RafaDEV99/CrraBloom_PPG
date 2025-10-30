@@ -35,7 +35,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(raylib)
 
-add_executable(${PROJECT_NAME} test/mainTest.c)
+add_executable(${PROJECT_NAME} test/UITest.c)
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
 
 # TODO: Add Box2d and raylib
