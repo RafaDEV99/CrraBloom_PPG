@@ -52,10 +52,10 @@ int main()
             nk_layout_row_end(ctx);
 
             nk_layout_row_dynamic(ctx, 60, 2);
-            nk_button_label(ctx, "A usefull button!");
-            nk_button_label(ctx, "A usefull button!");
-            nk_button_label(ctx, "A usefull button!");
-            nk_button_label(ctx, "A usefull button!");
+            nk_button_label(ctx, "Button 1");
+            nk_button_label(ctx, "Button 2");
+            nk_button_label(ctx, "Button 3");
+            nk_button_label(ctx, "Button 4");
 
             nk_layout_row_static(ctx, 120, 120, 1);
             cubeColor = nk_color_picker(ctx, cubeColor, NK_RGBA);
