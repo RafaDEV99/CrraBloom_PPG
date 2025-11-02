@@ -31,7 +31,7 @@ int main()
     {
         UpdateNuklear(ctx);
 
-        printf("The object was: %f dencity\n", testDencity);
+        // printf("The object was: %f dencity\n", testDencity);
 
         if (nk_begin_titled(ctx, "ObjWindow", windowTittle, nk_rect(20, 75, 340, 320), windowFlags))
         {
@@ -54,8 +54,6 @@ int main()
             nk_layout_row_dynamic(ctx, 60, 2);
             nk_button_label(ctx, "Button 1");
             nk_button_label(ctx, "Button 2");
-            nk_button_label(ctx, "Button 3");
-            nk_button_label(ctx, "Button 4");
 
             nk_layout_row_static(ctx, 120, 120, 1);
             cubeColor = nk_color_picker(ctx, cubeColor, NK_RGBA);
