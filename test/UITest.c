@@ -10,7 +10,9 @@
 
 struct nk_context *ctx;
 
-void FirstWindowPannel(struct nk_context *ctx, char windowTittle[], float dencity, int windowFlags, struct nk_colorf cubeColor)
+struct nk_colorf cubeColor;
+
+void FirstWindowPannel(struct nk_context *ctx, char windowTittle[], float dencity, int windowFlags)
 {
     if (nk_begin_titled(ctx, "ObjWindow", windowTittle, nk_rect(20, 75, 340, 320), windowFlags))
     {
@@ -55,7 +57,7 @@ int main()
     int windowFlags = NK_WINDOW_SCALABLE|NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_MINIMIZABLE;
     char windowTittle[] = "Object Creation window";
 
-    struct nk_colorf cubeColor = ColorToNuklearF(BLUE);
+    cubeColor = ColorToNuklearF(BLUE);
 
     while (!WindowShouldClose()) 
     {
@@ -63,7 +65,7 @@ int main()
 
         // printf("The object was: %f dencity\n", testDencity);
 
-        FirstWindowPannel(ctx, windowTittle, testDencity, windowFlags, cubeColor);
+        FirstWindowPannel(ctx, windowTittle, testDencity, windowFlags);
 
         BeginDrawing();
             ClearBackground(RAYWHITE);
