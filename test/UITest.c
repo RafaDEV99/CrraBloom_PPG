@@ -34,11 +34,14 @@ void FirstWindowPannel(struct nk_context *ctx, char windowTittle[], int windowFl
         nk_layout_row_end(ctx);
 
         nk_layout_row_dynamic(ctx, 60, 2);
-        nk_button_label(ctx, "Button 1");
-        nk_button_label(ctx, "Button 2");
+        nk_button_label(ctx, "First Button");
+        nk_button_label(ctx, "Second  Button");
 
         nk_layout_row_static(ctx, 120, 120, 1);
         cubeColor = nk_color_picker(ctx, cubeColor, NK_RGBA);
+
+        nk_layout_row_dynamic(ctx, 50, 1);
+        nk_label(ctx, "No wrap label!", NK_TEXT_LEFT);
     }
     nk_end(ctx);
 }
@@ -50,6 +53,7 @@ int main()
 
     int fontSize = 14;
 
+    // TODO: Add another font besides the default one
     // Font font = LoadFontFromNuklear(fontSize);
     ctx = InitNuklear(fontSize);
 
