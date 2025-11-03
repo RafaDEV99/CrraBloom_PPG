@@ -31,13 +31,13 @@ include(FetchContent)
 FetchContent_Declare(
     raylib
     GIT_REPOSITORY https://github.com/raysan5/raylib.git
-    GIT_TAG master
+    GIT_TAG 5.5
     GIT_SHALLOW TRUE
     GIT_PROGRESS TRUE
 )
 FetchContent_MakeAvailable(raylib)
 
-add_executable(${PROJECT_NAME} test/UITest.c)
+add_executable(${PROJECT_NAME} main.c)
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
 
 # TODO: Add Box2d and raylib
