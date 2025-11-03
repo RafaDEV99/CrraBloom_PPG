@@ -11,8 +11,9 @@
 struct nk_context *ctx;
 
 struct nk_colorf cubeColor;
+float testDencity = 0.0f;
 
-void FirstWindowPannel(struct nk_context *ctx, char windowTittle[], float dencity, int windowFlags)
+void FirstWindowPannel(struct nk_context *ctx, char windowTittle[], int windowFlags)
 {
     if (nk_begin_titled(ctx, "ObjWindow", windowTittle, nk_rect(20, 75, 340, 320), windowFlags))
     {
@@ -20,7 +21,7 @@ void FirstWindowPannel(struct nk_context *ctx, char windowTittle[], float dencit
         nk_label_wrap(ctx, "Welcome to the CrraBloom creation window!");
 
         nk_layout_row_static(ctx, 30, 250, 1);
-        nk_slider_float(ctx, 0.0f, &dencity, 100.0f, 0.1f);
+        nk_slider_float(ctx, 0.0f, &testDencity, 100.0f, 0.1f);
 
         nk_layout_row_begin(ctx, NK_STATIC, 30, 1);
         {
@@ -49,8 +50,6 @@ int main()
 
     int fontSize = 14;
 
-    float testDencity = 0.0f;
-
     // Font font = LoadFontFromNuklear(fontSize);
     ctx = InitNuklear(fontSize);
 
@@ -63,9 +62,9 @@ int main()
     {
         UpdateNuklear(ctx);
 
-        // printf("The object was: %f dencity\n", testDencity);
+        printf("The object was: %f dencity\n", testDencity);
 
-        FirstWindowPannel(ctx, windowTittle, testDencity, windowFlags);
+        FirstWindowPannel(ctx, windowTittle, windowFlags);
 
         BeginDrawing();
             ClearBackground(RAYWHITE);
