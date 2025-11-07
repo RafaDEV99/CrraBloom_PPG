@@ -46,6 +46,11 @@ void FirstWindowPannel(struct nk_context *ctx, char windowTittle[], int windowFl
     nk_end(ctx);
 }
 
+void SecondWindow(struct nk_context ctx)
+{
+    // TODO:
+}
+
 int main()
 {
     InitWindow(1080, 700, "Raygui example");
