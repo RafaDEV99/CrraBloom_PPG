@@ -57,6 +57,7 @@ PhysicsBody bodiesList[55] = { 0 };
 // TODO: Rectangle BodieRect[16] = { 0 };
 
 // Function yoinked from the Physac examples :3
+// This function draws the bodies
 void DrawCollisionWireFrames(int count)
 {
     for (int i = 0; i < count; i++)
@@ -122,22 +123,22 @@ void DrawBodySubGui(int valueBodyIndex, float x_obj_position, float y_obj_positi
     int value2 = 0;
 
     // TODO: 
-    switch (valueBodyIndex) 
-    {
-        case RECTANGLE_BODY:
-
-            // I don´t know if continue this or rewrite the code for this...
-            GuiValueBox((Rectangle){x_obj_position - 20, y_obj_position - 20, 120, 50}, valueBoxTextX, &value, 0, WINDOW_WIDTH, editVal);
-            GuiValueBox((Rectangle){x_obj_position - 40, y_obj_position - 20, 120, 50}, valueBoxTextY, &value2, 0, WINDOW_HEIGHT, editValueY);
-            break;
-        case CIRCLE_BODY:
-            break;
-        case POLYGON_BODY:
-            break;
-        default:
-            fprintf(stderr, "can´t detect that buddy!");
-            break;
-    }
+    // switch (valueBodyIndex) 
+    // {
+    //     case RECTANGLE_BODY:
+    //
+    //         // I don´t know if continue this or rewrite the code for this...
+    //         GuiValueBox((Rectangle){x_obj_position - 20, y_obj_position - 20, 120, 50}, valueBoxTextX, &value, 0, WINDOW_WIDTH, editVal);
+    //         GuiValueBox((Rectangle){x_obj_position - 40, y_obj_position - 20, 120, 50}, valueBoxTextY, &value2, 0, WINDOW_HEIGHT, editValueY);
+    //         break;
+    //     case CIRCLE_BODY:
+    //         break;
+    //     case POLYGON_BODY:
+    //         break;
+    //     default:
+    //         fprintf(stderr, "can´t detect that buddy!");
+    //         break;
+    // }
 }
 
 int main()
