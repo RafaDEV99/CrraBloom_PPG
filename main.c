@@ -21,9 +21,9 @@
 #include "Includes/raygui.h"
 
 // NOTE: Add this later:
-#define RAYLIB_NUKLEAR_IMPLEMENTATION
-#include <raylib-nuklear.h>
-#include <raylib-nuklear-font.h>
+// #define RAYLIB_NUKLEAR_IMPLEMENTATION
+// #include <raylib-nuklear.h>
+// #include <raylib-nuklear-font.h>
 
 // All defines and macros goes here
 #define WINDOW_WIDTH   1080
@@ -45,15 +45,15 @@ enum ObjectType
 int RectHeight = 40;
 int RectWidth = 40;
 
-int circleRad = 0;
+int circleRad = 20;
 
-int PolySides = 0;
-int PolyRadius = 0;
+int PolySides = 15;
+int PolyRadius = 15;
 
 int ValueGetX = 0;
 int ValueGetY = 0;
 
-PhysicsBody bodiesList[55] = { 0 };
+PhysicsBody bodiesList[128] = { 0 };
 // TODO: Rectangle BodieRect[16] = { 0 };
 
 // Function yoinked from the Physac examples :3
@@ -122,7 +122,6 @@ void DrawBodySubGui(int valueBodyIndex, float x_obj_position, float y_obj_positi
     int value = 0;
     int value2 = 0;
 
-    // TODO: 
     // switch (valueBodyIndex) 
     // {
     //     case RECTANGLE_BODY:
