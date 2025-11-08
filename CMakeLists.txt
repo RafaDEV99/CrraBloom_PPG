@@ -1,6 +1,5 @@
+# Proyect setup:
 cmake_minimum_required(VERSION 3.15)
-
-# Proyect name
 project(CrraBloom)
 
 # Crete the export command file
@@ -11,7 +10,8 @@ option(BOX2D_TEST "Added box2d!" OFF)
 option(SANITIZERS "Added Sanitizers" OFF)
 
 # NOTE: Add a SANITIZERS flag if you want sanitizers for debuging and else
-if(SANITIZERS) # <-- Temp may change
+# But NO if you are building a realese!
+if(SANITIZERS)
     message("-- Sanitizers ON! :)")
     add_compile_options(-fsanitize=address)
     add_link_options(-fsanitize=address)
@@ -51,6 +51,6 @@ if(BOX2D_TEST)
     target_link_libraries(${PROJECT_NAME} PRIVATE box2d)
     message("-- Added Box2D!, remember that this flag is a test and later will be gone.")
 else()
-    message(STATUS "Box2D flag not set — only using Raylib.")
+    message(STATUS "-- Box2D flag not set — only using Raylib.")
 endif()
 
