@@ -12,11 +12,11 @@ option(SANITIZERS "Added Sanitizers" OFF)
 # NOTE: Add a SANITIZERS flag if you want sanitizers for debuging and else
 # But NO if you are building a realese!
 if(SANITIZERS)
-    message("-- Sanitizers ON! :)")
+    message("Sanitizers ON! :)")
     add_compile_options(-fsanitize=address)
     add_link_options(-fsanitize=address)
 else()
-    message("-- Sanitizers OFF! :(")
+    message("Sanitizers OFF! :(")
 endif()
 
 # Include our modules from the the Include directory
@@ -38,7 +38,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
 
 # Box2d
 if(BOX2D_TEST)
-    message("-- Adding Box2d and raylib!")
+    message("Adding Box2d and raylib!")
     include(FetchContent)
     FetchContent_Declare(
     	box2d
@@ -49,8 +49,8 @@ if(BOX2D_TEST)
     )
     FetchContent_MakeAvailable(box2d)
     target_link_libraries(${PROJECT_NAME} PRIVATE box2d)
-    message("-- Added Box2D!, remember that this flag is a test and later will be gone.")
+    message("Added Box2D!, remember that this flag is a test and later will be gone.")
 else()
-    message(STATUS "-- Box2D flag not set — only using Raylib.")
+    message(STATUS "Box2D flag not set — only using Raylib.")
 endif()
 
