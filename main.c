@@ -159,7 +159,7 @@ int main()
     int GetDencity = 0;
     int BodiesCount = 0;
 
-    // Booleans for managing the state of two value boxes:
+    // Main booleans:
     bool editValX = false;
     bool editValY = false;
 
@@ -172,7 +172,7 @@ int main()
 
     while (!WindowShouldClose()) 
     {
-        // Update values
+        // Update
         delta = GetFrameTime();
         BodiesCount = GetPhysicsBodiesCount();
         MousePosition = GetMousePosition();
