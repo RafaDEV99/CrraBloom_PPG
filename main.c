@@ -143,7 +143,7 @@ void DrawBodySubGui(int valueBodyIndex, float x_obj_position, float y_obj_positi
 int main()
 {
     // Initialization functions
-    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+    // SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
     InitPhysics();
     SetTargetFPS(60);
@@ -176,6 +176,7 @@ int main()
         delta = GetFrameTime();
         BodiesCount = GetPhysicsBodiesCount();
         MousePosition = GetMousePosition();
+        SetPhysicsGravity(gravityX, gravityY);
 
         if (IsKeyPressed(KEY_D))
         {
@@ -251,6 +252,7 @@ int main()
         EndDrawing();
     }
     
+    // Memory liveration
     ClosePhysics();
     CloseWindow();
     return 0;
