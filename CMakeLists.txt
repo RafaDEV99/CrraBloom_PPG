@@ -33,7 +33,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(raylib)
 
-add_executable(${PROJECT_NAME} main.c)
+add_executable(${PROJECT_NAME} src/main.c)
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
 
 # Box2d
