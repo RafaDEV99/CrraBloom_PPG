@@ -15,11 +15,11 @@
 
 // External include (from the include folder :P )
 #define PHYSAC_IMPLEMENTATION
-#include "Includes/physac.h"
+#include "../Includes/physac.h"
 
 // Gui Header files
 #define RAYGUI_IMPLEMENTATION
-#include "Includes/raygui.h"
+#include "../Includes/raygui.h"
 
 // NOTE: Add this later:
 // #define RAYLIB_NUKLEAR_IMPLEMENTATION
