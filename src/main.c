@@ -139,7 +139,7 @@ int main()
         delta = GetFrameTime();
         BodiesCount = GetPhysicsBodiesCount();
         MousePosition = GetMousePosition();
-        SetPhysicsGravity(gravityX, gravityY);
+        SetPhysicsGravity(GRAVITY_X, GRAVITY_Y);
 
         if (IsKeyPressed(KEY_D))
         {
