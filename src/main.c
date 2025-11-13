@@ -103,44 +103,6 @@ const char* GetBodyTypeName(int bodyIndex)
 bool editVal = true;
 bool editValueY = true;
 
-// TODO: add more to this function :P
-void DrawBodySubGui(int valueBodyIndex, float x_obj_position, float y_obj_position)
-{
-    // NOTE: When the Object is selected (or just created), it will show a diferent GUI
-    // WARNING: Its better to use the enum the provided in the enums section (You can olso include a new instanciator function)
-
-    const char* ObjectName = GetBodyTypeName(valueBodyIndex);
-
-    float WBoxWidth = 300.0f;
-    float WBoxHeight = 200.0f;
-
-    GuiWindowBox((Rectangle){10.0f, 490.0f, WBoxWidth, WBoxHeight}, TextFormat("%s properties", ObjectName));
-
-    char valueBoxTextX[16] = "X ";
-    char valueBoxTextY[16] = "Y ";
-
-    char valueBuff[64];
-    int value = 0;
-    int value2 = 0;
-
-    // switch (valueBodyIndex) 
-    // {
-    //     case RECTANGLE_BODY:
-    //
-    //         // I don´t know if continue this or rewrite the code for this...
-    //         GuiValueBox((Rectangle){x_obj_position - 20, y_obj_position - 20, 120, 50}, valueBoxTextX, &value, 0, WINDOW_WIDTH, editVal);
-    //         GuiValueBox((Rectangle){x_obj_position - 40, y_obj_position - 20, 120, 50}, valueBoxTextY, &value2, 0, WINDOW_HEIGHT, editValueY);
-    //         break;
-    //     case CIRCLE_BODY:
-    //         break;
-    //     case POLYGON_BODY:
-    //         break;
-    //     default:
-    //         fprintf(stderr, "can´t detect that buddy!");
-    //         break;
-    // }
-}
-
 int main()
 {
     // Initialization functions
@@ -198,8 +160,6 @@ int main()
             {
                 buttonFlag = !buttonFlag;
             }
-
-            DrawBodySubGui(ValueDrop, 0, 0);
 
             if (buttonFlag == true)
             {
