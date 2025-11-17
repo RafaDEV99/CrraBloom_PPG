@@ -35,6 +35,9 @@ int main()
 
         if (time >= 10)
         {
+            // Memory free escape:
+            CloseWindow();
+            UnloadNuklear(ctx);
             return 0;
         }
 
@@ -52,6 +55,8 @@ int main()
         EndDrawing();
     }
 
+    // Unload part:
     CloseWindow();
+    UnloadNuklear(ctx);
     return 0;
 }
