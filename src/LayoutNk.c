@@ -22,7 +22,7 @@ int main()
     int fontSize = FONT_SIZE;
 
     ctx = InitNuklear(fontSize);
-
+    Color randomColor;
 
     while (!WindowShouldClose()) {
 
@@ -30,6 +30,8 @@ int main()
         float time = GetTime();
         UpdateNuklear(ctx);
         printf("Time %f\n", time);
+
+        randomColor = (Color){GetRandomValue(0, 255), GetRandomValue(0, 255), GetRandomValue(0, 255), 255};
 
         if (time >= 10)
         {
@@ -39,7 +41,8 @@ int main()
         if (nk_begin(ctx, "My window", nk_rect(20, 75, 220, 220), 
             NK_WINDOW_BORDER|NK_WINDOW_MINIMIZABLE|NK_WINDOW_MOVABLE))
         {
-            // TODO: Do something...
+            nk_layout_row_static(ctx, 50, 120, 1);
+            nk_label_colored(ctx, "This text is going crazy!!", NK_TEXT_ALIGN_LEFT, ColorToNuklear(randomColor));
         }
         nk_end(ctx);
 
