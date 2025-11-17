@@ -55,7 +55,7 @@ int main()
         EndDrawing();
     }
 
-    // Unload part:
+    // Unload Window and Nuklear GUI:
     CloseWindow();
     UnloadNuklear(ctx);
     return 0;
