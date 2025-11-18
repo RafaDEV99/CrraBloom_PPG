@@ -32,7 +32,7 @@ int main()
         delta = GetFrameTime();
         time -= delta;
         UpdateNuklear(ctx);
-        printf("Color Cicle: %s\n", colorCicle? "True" : "False");
+        // printf("Color Cicle: %s\n", colorCicle? "True" : "False");
 
         if (time >= 0.0f)
         {
