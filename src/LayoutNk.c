@@ -100,12 +100,6 @@ int main()
         }
         nk_end(ctx) ;
 
-        for (int i = 0; i < 3; i++)
-        {
-            b2BodyId newBody = CreateObject((b2Vec2){540, 200}, worldId, bodySize, b2_dynamicBody);
-            DrawBody(newBody, (Vector2){50.0f, 50.0f}, BLUE);
-        }
-
         BeginDrawing();
         ClearBackground(RAYWHITE);
         DrawBody(bodyId, bodySize, BLUE);
