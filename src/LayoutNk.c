@@ -26,6 +26,8 @@ b2BodyId CreateObject(b2Vec2 position, b2WorldId worldId, Vector2 size, b2BodyTy
 
     b2BodyId id = b2CreateBody(worldId, &def);
 
+    // Box extend
+    // NOTE: We multitplty by 0.5 if we want half the box (That is what we need)
     b2Polygon box = b2MakeBox(size.x * 0.5f, size.y * 0.5f);
     b2ShapeDef shapeDef = b2DefaultShapeDef();
     b2CreatePolygonShape(id, &shapeDef, &box);
