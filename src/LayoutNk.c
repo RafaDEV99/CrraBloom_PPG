@@ -18,16 +18,15 @@
 struct nk_context *ctx;
 float delta = 0.0f;
 
-b2BodyId CreateObject(b2Vec2 position, b2WorldId worldId, Vector2 size)
+b2BodyId CreateObject(b2Vec2 position, b2WorldId worldId, Vector2 size, b2BodyType type)
 {
     b2BodyDef def = b2DefaultBodyDef();
     def.position = position;
-    def.type = b2_dynamicBody;
+    def.type = type;
 
     b2BodyId id = b2CreateBody(worldId, &def);
-    b2Vec2 extend;
 
-    b2Polygon box = b2MakeBox(size.x, size.y);
+    b2Polygon box = b2MakeBox(size.x * 0.5f, size.y * 0.5f);
     b2ShapeDef shapeDef = b2DefaultShapeDef();
     b2CreatePolygonShape(id, &shapeDef, &box);
 
@@ -35,7 +34,7 @@ b2BodyId CreateObject(b2Vec2 position, b2WorldId worldId, Vector2 size)
 }
 
 
-void DrawBody(b2BodyId id, Vector2 size)
+void DrawBody(b2BodyId id, Vector2 size, Color color)
 {
     b2Vec2 pos = b2Body_GetPosition(id);
     b2Vec2 Ppos = b2Body_GetWorldPoint(id, (b2Vec2){-size.x * 0.5f, -size.y * 0.5f});
@@ -47,7 +46,7 @@ void DrawBody(b2BodyId id, Vector2 size)
         (Rectangle){pos.x, pos.y, size.x, size.y},
         (Vector2){size.x * 0.5f, size.y * 0.5f},
         angle * RAD2DEG,
-        BLUE
+        color
     );
 }
 
@@ -57,18 +56,21 @@ int main()
     SetTargetFPS(60);
 
     b2WorldDef worldDef = b2DefaultWorldDef();
-    b2WorldId worldId = b2CreateWorld(&worldDef);
-    b2SetLengthUnitsPerMeter(UNITS_PER_METER);
     worldDef.gravity.y = 9.8f * UNITS_PER_METER;
 
+    b2WorldId worldId = b2CreateWorld(&worldDef);
+    b2SetLengthUnitsPerMeter(UNITS_PER_METER);
 
     int fontSize = FONT_SIZE;
     bool colorCicle = true;
 
     float time = 5.0f;
-    int subStepCount = 4;
+    int subStepCount = 6;
 
-    b2BodyId bodyId = CreateObject((b2Vec2){540, 300}, worldId, (Vector2){50.0f, 50.0f});
+    Vector2 bodySize = {50.0f, 50.0f};
+    Vector2 floorSize = {300.0f, 50.0f};
+    b2BodyId bodyId = CreateObject((b2Vec2){540, 200}, worldId, bodySize, b2_dynamicBody);
+    b2BodyId floor = CreateObject((b2Vec2){540, 500}, worldId, floorSize, b2_staticBody);
 
     ctx = InitNuklear(fontSize);
     Color randomColor;
@@ -100,7 +102,8 @@ int main()
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
-        DrawBody(bodyId, (Vector2){50.f, 50.0f});
+        DrawBody(bodyId, bodySize, BLUE);
+        DrawBody(floor, floorSize, GREEN);
         DrawNuklear(ctx);
         EndDrawing();
     }
