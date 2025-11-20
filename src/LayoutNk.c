@@ -56,7 +56,7 @@ int main()
     SetTargetFPS(60);
 
     b2WorldDef worldDef = b2DefaultWorldDef();
-    worldDef.gravity.y = 9.8f * UNITS_PER_METER;
+    worldDef.gravity.y = 9.807f * UNITS_PER_METER;
 
     b2WorldId worldId = b2CreateWorld(&worldDef);
     b2SetLengthUnitsPerMeter(UNITS_PER_METER);
@@ -98,7 +98,13 @@ int main()
             nk_layout_row_static(ctx, 50, 160, 1);
             nk_label_colored(ctx, "This text is going crazy!!", NK_TEXT_ALIGN_LEFT, ColorToNuklear(randomColor));
         }
-        nk_end(ctx);
+        nk_end(ctx) ;
+
+        for (int i = 0; i < 3; i++)
+        {
+            b2BodyId newBody = CreateObject((b2Vec2){540, 200}, worldId, bodySize, b2_dynamicBody);
+            DrawBody(newBody, (Vector2){50.0f, 50.0f}, BLUE);
+        }
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
