@@ -2,6 +2,7 @@
 #include "box2d/math_functions.h"
 #include "box2d/types.h"
 #include <raylib.h>
+#include <raymath.h>
 #include <box2d/box2d.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,26 +31,58 @@ b2BodyId CreateObject(b2Vec2 position, b2WorldId worldId, Vector2 size, b2BodyTy
     // NOTE: We multitplty by 0.5 if we want half the box (That is what we need)
     b2Polygon box = b2MakeBox(size.x * 0.5f, size.y * 0.5f);
     b2ShapeDef shapeDef = b2DefaultShapeDef();
+    shapeDef.material.restitution = 0.7f;
+    shapeDef.density = 0.1f;
+
     b2CreatePolygonShape(id, &shapeDef, &box);
+    b2Body_ApplyMassFromShapes(id);
 
     return id;
 }
 
+void DrawRotatedRectOutline(Vector2 center, Vector2 size, float angle, Color color)
+{
+    Vector2 half = { size.x / 2, size.y / 2 };
+
+    // 4 vértices del rectángulo antes de rotar
+    Vector2 verts[4] = {
+        {-half.x, -half.y},
+        { half.x, -half.y},
+        { half.x,  half.y},
+        {-half.x,  half.y}
+    };
+
+    // Rotar y trasladar al centro
+    for (int i = 0; i < 4; i++)
+    {
+        verts[i] = Vector2Rotate(verts[i], angle);
+        verts[i].x += center.x;
+        verts[i].y += center.y;
+    }
+
+    // Dibujar líneas
+    for (int i = 0; i < 4; i++)
+    {
+        DrawLineEx(verts[i], verts[(i + 1) % 4], 2, color);
+    }
+}
 
 void DrawBody(b2BodyId id, Vector2 size, Color color)
 {
     b2Vec2 pos = b2Body_GetPosition(id);
     b2Vec2 Ppos = b2Body_GetWorldPoint(id, (b2Vec2){-size.x * 0.5f, -size.y * 0.5f});
+    b2Vec2 Bextend = {size.x * 0.5f, size.y * 0.5f};
     float angle = b2Rot_GetAngle(b2Body_GetRotation(id));
-
-    DrawCircleV((Vector2){pos.x, pos.y}, 5.0f, BLACK);
 
     DrawRectanglePro(
         (Rectangle){pos.x, pos.y, size.x, size.y},
-        (Vector2){size.x * 0.5f, size.y * 0.5f},
+        (Vector2){Bextend.x, Bextend.y},
         angle * RAD2DEG,
         color
     );
+
+    DrawRotatedRectOutline((Vector2){pos.x, pos.y}, (Vector2){size.x, size.y}, angle, DARKGRAY);
+
 }
 
 int main()
