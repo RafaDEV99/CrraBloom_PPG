@@ -32,7 +32,8 @@ b2BodyId CreateObject(b2Vec2 position, b2WorldId worldId, Vector2 size, b2BodyTy
     b2Polygon box = b2MakeBox(size.x * 0.5f, size.y * 0.5f);
     b2ShapeDef shapeDef = b2DefaultShapeDef();
     shapeDef.material.restitution = 0.7f;
-    shapeDef.density = 0.1f;
+    shapeDef.density = 20.0f;
+    shapeDef.material.friction = 0.4f;
 
     b2CreatePolygonShape(id, &shapeDef, &box);
     b2Body_ApplyMassFromShapes(id);
@@ -91,7 +92,7 @@ int main()
     SetTargetFPS(60);
 
     b2WorldDef worldDef = b2DefaultWorldDef();
-    worldDef.gravity.y = 9.807f * UNITS_PER_METER;
+    worldDef.gravity.y = 9.8f * UNITS_PER_METER;
 
     b2WorldId worldId = b2CreateWorld(&worldDef);
     b2SetLengthUnitsPerMeter(UNITS_PER_METER);
@@ -115,7 +116,6 @@ int main()
         delta = GetFrameTime();
         time -= delta;
         UpdateNuklear(ctx);
-        b2World_Step(worldId, delta, subStepCount);
         // printf("Color Cicle: %s\n", colorCicle? "True" : "False");
         if (time >= 0.0f)
         {
@@ -123,8 +123,14 @@ int main()
         } 
         else
         {
-            printf("Timer out!\n");
+            // printf("Timer out!\n");
             time = 0.0f;
+        }
+
+        if (IsKeyDown(KEY_SPACE))
+        {
+            b2Vec2 F = {100000000000.0f, 0.0f};
+            b2Body_ApplyForceToCenter(bodyId, F, true);
         }
 
         if (nk_begin(ctx, "My window", nk_rect(20, 75, 220, 220), 
@@ -134,6 +140,8 @@ int main()
             nk_label_colored(ctx, "This text is going crazy!!", NK_TEXT_ALIGN_LEFT, ColorToNuklear(randomColor));
         }
         nk_end(ctx) ;
+
+        b2World_Step(worldId, delta, subStepCount);
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
