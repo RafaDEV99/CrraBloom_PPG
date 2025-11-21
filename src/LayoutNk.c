@@ -31,7 +31,7 @@ b2BodyId CreateObject(b2Vec2 position, b2WorldId worldId, Vector2 size, b2BodyTy
     // NOTE: We multitplty by 0.5 if we want half the box (That is what we need)
     b2Polygon box = b2MakeBox(size.x * 0.5f, size.y * 0.5f);
     b2ShapeDef shapeDef = b2DefaultShapeDef();
-    shapeDef.material.restitution = 0.7f;
+    shapeDef.material.restitution = 0.2f;
     shapeDef.density = 20.0f;
     shapeDef.material.friction = 0.4f;
 
@@ -106,6 +106,7 @@ int main()
     Vector2 bodySize = {50.0f, 50.0f};
     Vector2 floorSize = {300.0f, 50.0f};
     b2BodyId bodyId = CreateObject((b2Vec2){540, 200}, worldId, bodySize, b2_dynamicBody);
+    b2BodyId cube1 = CreateObject((b2Vec2){540, 100}, worldId, (Vector2){50.0f, 50.0f}, b2_dynamicBody);
     b2BodyId floor = CreateObject((b2Vec2){540, 500}, worldId, floorSize, b2_staticBody);
 
     ctx = InitNuklear(fontSize);
@@ -147,6 +148,7 @@ int main()
         ClearBackground(RAYWHITE);
         DrawBody(bodyId, bodySize, BLUE);
         DrawBody(floor, floorSize, GREEN);
+        DrawBody(cube1, (Vector2){50.0f, 50.0f}, RED);
         DrawNuklear(ctx);
         EndDrawing();
     }
