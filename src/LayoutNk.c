@@ -45,7 +45,6 @@ void DrawRotatedRectOutline(Vector2 center, Vector2 size, float angle, Color col
 {
     Vector2 half = { size.x / 2, size.y / 2 };
 
-    // 4 vértices del rectángulo antes de rotar
     Vector2 verts[4] = {
         {-half.x, -half.y},
         { half.x, -half.y},
@@ -53,7 +52,6 @@ void DrawRotatedRectOutline(Vector2 center, Vector2 size, float angle, Color col
         {-half.x,  half.y}
     };
 
-    // Rotar y trasladar al centro
     for (int i = 0; i < 4; i++)
     {
         verts[i] = Vector2Rotate(verts[i], angle);
@@ -61,7 +59,6 @@ void DrawRotatedRectOutline(Vector2 center, Vector2 size, float angle, Color col
         verts[i].y += center.y;
     }
 
-    // Dibujar líneas
     for (int i = 0; i < 4; i++)
     {
         DrawLineEx(verts[i], verts[(i + 1) % 4], 2, color);
@@ -143,7 +140,6 @@ int main()
             nk_label_colored(ctx, "This text is going crazy!!", NK_TEXT_ALIGN_LEFT, ColorToNuklear(randomColor));
         }
         nk_end(ctx) ;
-
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
