@@ -117,6 +117,7 @@ int main()
         delta = GetFrameTime();
         time -= delta;
         UpdateNuklear(ctx);
+
         // printf("Color Cicle: %s\n", colorCicle? "True" : "False");
         if (time >= 0.0f)
         {
@@ -125,6 +126,7 @@ int main()
         else
         {
             // printf("Timer out!\n");
+            b2World_Step(worldId, delta, subStepCount);
             time = 0.0f;
         }
 
@@ -142,7 +144,6 @@ int main()
         }
         nk_end(ctx) ;
 
-        b2World_Step(worldId, delta, subStepCount);
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
