@@ -126,6 +126,24 @@ int main()
             // printf("Timer out!\n");
             time = 0.0f;
         }
+        switch (GetKeyPressed()) {
+            case KEY_LEFT:
+                ForceDirection = (b2Vec2){-forcePower, 0.0f};
+                break;
+            case KEY_RIGHT:
+                ForceDirection = (b2Vec2){forcePower, 0.0f};
+                break;
+            case KEY_SPACE:
+                ForceDirection = (b2Vec2){0.0f, -forcePower};
+                break;
+            default:
+                break;
+        }
+
+        if (IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_RIGHT))
+        {
+            b2Body_ApplyForceToCenter(bodyId, ForceDirection, true);
+        }
 
 
         switch (GetKeyPressed()) {
