@@ -78,7 +78,6 @@ void DrawBody(b2BodyId id, Vector2 size, Color color)
     );
 
     DrawRotatedRectOutline((Vector2){pos.x, pos.y}, (Vector2){size.x, size.y}, angle, DARKGRAY);
-
 }
 
 int main()
@@ -99,6 +98,7 @@ int main()
     int subStepCount = 6;
 
     b2Vec2 ForceDirection = {-100000000.0f, 0.0f};
+    float forcePower = 100000000.0f;
 
     Vector2 bodySize = {50.0f, 50.0f};
     Vector2 floorSize = {300.0f, 50.0f};
@@ -127,19 +127,23 @@ int main()
             time = 0.0f;
         }
 
-        if (IsKeyDown(KEY_LEFT))
-        {
-            ForceDirection = (b2Vec2){-100000000.0f, 0.0f};
-            b2Body_ApplyForceToCenter(bodyId, ForceDirection, true);
+
+        switch (GetKeyPressed()) {
+            case KEY_LEFT:
+                ForceDirection = (b2Vec2){-forcePower, 0.0f};
+                break;
+            case KEY_RIGHT:
+                ForceDirection = (b2Vec2){forcePower, 0.0f};
+                break;
+            case KEY_SPACE:
+                ForceDirection = (b2Vec2){0.0f, -forcePower};
+                break;
+            default:
+                break;
         }
-        else if (IsKeyDown(KEY_RIGHT)) 
+
+        if (IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_RIGHT))
         {
-            ForceDirection = (b2Vec2){100000000.0f, 0.0f};
-            b2Body_ApplyForceToCenter(bodyId, ForceDirection, true);
-        }
-        else if (IsKeyDown(KEY_SPACE)) 
-        {
-            ForceDirection = (b2Vec2){0.0f, -100000000.0f};
             b2Body_ApplyForceToCenter(bodyId, ForceDirection, true);
         }
 
