@@ -32,8 +32,6 @@ b2BodyId CreateObject(b2Vec2 position, b2WorldId worldId, Vector2 size, b2BodyTy
     b2Polygon box = b2MakeBox(size.x * 0.5f, size.y * 0.5f);
     b2ShapeDef shapeDef = b2DefaultShapeDef();
     shapeDef.material.restitution = 0.2f;
-    shapeDef.density = 20.0f;
-    shapeDef.material.friction = 0.4f;
 
     b2CreatePolygonShape(id, &shapeDef, &box);
     b2Body_ApplyMassFromShapes(id);
@@ -100,6 +98,8 @@ int main()
     float time = 5.0f;
     int subStepCount = 6;
 
+    b2Vec2 ForceDirection = {-100000000.0f, 0.0f};
+
     Vector2 bodySize = {50.0f, 50.0f};
     Vector2 floorSize = {300.0f, 50.0f};
     b2BodyId bodyId = CreateObject((b2Vec2){540, 200}, worldId, bodySize, b2_dynamicBody);
@@ -114,6 +114,7 @@ int main()
         delta = GetFrameTime();
         time -= delta;
         UpdateNuklear(ctx);
+        b2World_Step(worldId, delta, subStepCount);
 
         // printf("Color Cicle: %s\n", colorCicle? "True" : "False");
         if (time >= 0.0f)
@@ -123,14 +124,23 @@ int main()
         else
         {
             // printf("Timer out!\n");
-            b2World_Step(worldId, delta, subStepCount);
             time = 0.0f;
         }
 
-        if (IsKeyDown(KEY_SPACE))
+        if (IsKeyDown(KEY_LEFT))
         {
-            b2Vec2 F = {100000000000.0f, 0.0f};
-            b2Body_ApplyForceToCenter(bodyId, F, true);
+            ForceDirection = (b2Vec2){-100000000.0f, 0.0f};
+            b2Body_ApplyForceToCenter(bodyId, ForceDirection, true);
+        }
+        else if (IsKeyDown(KEY_RIGHT)) 
+        {
+            ForceDirection = (b2Vec2){100000000.0f, 0.0f};
+            b2Body_ApplyForceToCenter(bodyId, ForceDirection, true);
+        }
+        else if (IsKeyDown(KEY_SPACE)) 
+        {
+            ForceDirection = (b2Vec2){0.0f, -100000000.0f};
+            b2Body_ApplyForceToCenter(bodyId, ForceDirection, true);
         }
 
         if (nk_begin(ctx, "My window", nk_rect(20, 75, 220, 220), 
@@ -139,7 +149,7 @@ int main()
             nk_layout_row_static(ctx, 50, 160, 1);
             nk_label_colored(ctx, "This text is going crazy!!", NK_TEXT_ALIGN_LEFT, ColorToNuklear(randomColor));
         }
-        nk_end(ctx) ;
+        nk_end(ctx);
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
