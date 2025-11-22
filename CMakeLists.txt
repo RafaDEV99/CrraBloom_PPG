@@ -4,6 +4,7 @@ project(CrraBloom)
 
 # Crete the export command file
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CFILE_PATH "src/LayoutNk.c")
 
 # Custon flags:
 option(BOX2D_TEST "Added box2d!" OFF)
@@ -33,7 +34,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(raylib)
 
-add_executable(${PROJECT_NAME} src/LayoutNk.c)
+add_executable(${PROJECT_NAME} ${CFILE_PATH})
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
 
 # Box2d
