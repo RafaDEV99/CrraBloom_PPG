@@ -3,7 +3,7 @@
 
 # CrraBloom_PPG
 CrraBloom_PPG (or the CrraBloom Physics Program) is an open-source physics simulator written in the programming language C with Raylib.
-For now, CrraBloom is an **Alpha**, so if you find any bugs, please feel free to let me know in the Issues tab in GitHub. Thanks for reading. 😁
+For now, CrraBloom is an **Alpha**. If you find any bugs, please feel free to let me know in the Issues tab on GitHub. Thanks for reading. 😁
 
 **Creator's Note**
 > [!NOTE]
@@ -32,7 +32,7 @@ make
 ```
 And that´s it for the installation! 😁
 
-> ![NOTE]
-> In the future I gess that Im going to change physics system to Box2d
+> [!NOTE]
+> In the future, I guess that I'm going to change the physics system to Box2D
 >
-> A re do of the code will be done soon...
+> A re-do of the code will be done soon...
