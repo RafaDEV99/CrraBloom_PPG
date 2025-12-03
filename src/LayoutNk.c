@@ -1,5 +1,4 @@
 #include "box2d/id.h"
-#include "box2d/math_functions.h"
 #include "box2d/types.h"
 #include <raylib.h>
 #include <raymath.h>
@@ -18,6 +17,14 @@
 
 struct nk_context *ctx;
 float delta = 0.0f;
+
+typedef struct 
+{
+    b2BodyId b2ID;
+    b2BodyDef b2Def;
+    Vector2 position;
+    Vector2 size;
+} PhysicsObject;
 
 b2BodyId CreateObject(b2Vec2 position, b2WorldId worldId, Vector2 size, b2BodyType type)
 {
@@ -39,7 +46,23 @@ b2BodyId CreateObject(b2Vec2 position, b2WorldId worldId, Vector2 size, b2BodyTy
     return id;
 }
 
-void DrawRotatedRectOutline(Vector2 center, Vector2 size, float angle, Color color)
+b2BodyId CreateCircleObject(b2Vec2 position, b2WorldId worldId, int radius, b2BodyType type)
+{
+    b2BodyDef CircleBody = b2DefaultBodyDef();
+
+    CircleBody.position = position;
+    CircleBody.type = type;
+
+    b2BodyId CircleId = b2CreateBody(worldId, &CircleBody);
+    b2Circle circle = {{0.0f, 0.0f}, radius};
+    b2ShapeDef CircleShapeDef = b2DefaultShapeDef();
+
+    b2CreateCircleShape(CircleId, &CircleShapeDef, &circle);
+
+    return CircleId;
+}
+
+void DrawRotatedRectOutline(Vector2 center, Vector2 size, float angle, int borderThickness, Color color)
 {
     Vector2 half = { size.x / 2, size.y / 2 };
 
@@ -59,13 +82,14 @@ void DrawRotatedRectOutline(Vector2 center, Vector2 size, float angle, Color col
 
     for (int i = 0; i < 4; i++)
     {
-        DrawLineEx(verts[i], verts[(i + 1) % 4], 2, color);
+        DrawLineEx(verts[i], verts[(i + 1) % 4], borderThickness, color);
     }
 }
 
 void DrawBody(b2BodyId id, Vector2 size, Color color)
 {
     b2Vec2 pos = b2Body_GetPosition(id);
+    int borderSize = 2;
     b2Vec2 Ppos = b2Body_GetWorldPoint(id, (b2Vec2){-size.x * 0.5f, -size.y * 0.5f});
     b2Vec2 Bextend = {size.x * 0.5f, size.y * 0.5f};
     float angle = b2Rot_GetAngle(b2Body_GetRotation(id));
@@ -77,7 +101,7 @@ void DrawBody(b2BodyId id, Vector2 size, Color color)
         color
     );
 
-    DrawRotatedRectOutline((Vector2){pos.x, pos.y}, (Vector2){size.x, size.y}, angle, DARKGRAY);
+    DrawRotatedRectOutline((Vector2){pos.x, pos.y}, (Vector2){size.x, size.y}, angle, borderSize, DARKGRAY);
 }
 
 int main()
@@ -94,17 +118,27 @@ int main()
     int fontSize = FONT_SIZE;
     bool colorCicle = true;
 
-    float time = 5.0f;
+    float time = 0.0f;
     int subStepCount = 6;
 
     b2Vec2 ForceDirection = {-100000000.0f, 0.0f};
     float forcePower = 100000000.0f;
+    int cicleRadius = 25.0f;
+
+    b2Vec2 CirclePos = {540.0f, 70.0f};
 
     Vector2 bodySize = {50.0f, 50.0f};
-    Vector2 floorSize = {300.0f, 50.0f};
+    Vector2 floorSize = {540.0f, 50.0f};
+    b2BodyId EpicCircle = CreateCircleObject(CirclePos, worldId, cicleRadius, b2_dynamicBody);
     b2BodyId bodyId = CreateObject((b2Vec2){540, 200}, worldId, bodySize, b2_dynamicBody);
     b2BodyId cube1 = CreateObject((b2Vec2){540, 100}, worldId, (Vector2){50.0f, 50.0f}, b2_dynamicBody);
     b2BodyId floor = CreateObject((b2Vec2){540, 500}, worldId, floorSize, b2_staticBody);
+    b2BodyId bodies[1000] = {0};
+
+    bool hasBody = false;
+    int bodyCount = 0;
+
+    Color randCubeColor;
 
     ctx = InitNuklear(fontSize);
     Color randomColor;
@@ -112,20 +146,36 @@ int main()
     while (!WindowShouldClose()) {
 
         delta = GetFrameTime();
-        time -= delta;
+        time += delta;
         UpdateNuklear(ctx);
         b2World_Step(worldId, delta, subStepCount);
 
-        // printf("Color Cicle: %s\n", colorCicle? "True" : "False");
-        if (time >= 0.0f)
+        printf("Time: %f\n", time);
+        if (time >= 0.5f)
         {
-            printf("Time %f\n", time);
-        } 
-        else
-        {
-            // printf("Timer out!\n");
+            randCubeColor = (Color){GetRandomValue(0, 255), GetRandomValue(0, 255), GetRandomValue(0, 255), 255};
             time = 0.0f;
         }
+
+        switch (GetKeyPressed()) {
+            case KEY_LEFT:
+                ForceDirection = (b2Vec2){-forcePower, 0.0f};
+                break;
+            case KEY_RIGHT:
+                ForceDirection = (b2Vec2){forcePower, 0.0f};
+                break;
+            case KEY_SPACE:
+                ForceDirection = (b2Vec2){0.0f, -forcePower};
+                break;
+            default:
+                break;
+        }
+
+        if (IsKeyDown(KEY_SPACE) || IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_RIGHT))
+        {
+            b2Body_ApplyForceToCenter(bodyId, ForceDirection, true);
+        }
+
         switch (GetKeyPressed()) {
             case KEY_LEFT:
                 ForceDirection = (b2Vec2){-forcePower, 0.0f};
@@ -145,44 +195,52 @@ int main()
             b2Body_ApplyForceToCenter(bodyId, ForceDirection, true);
         }
 
-
-        switch (GetKeyPressed()) {
-            case KEY_LEFT:
-                ForceDirection = (b2Vec2){-forcePower, 0.0f};
-                break;
-            case KEY_RIGHT:
-                ForceDirection = (b2Vec2){forcePower, 0.0f};
-                break;
-            case KEY_SPACE:
-                ForceDirection = (b2Vec2){0.0f, -forcePower};
-                break;
-            default:
-                break;
-        }
-
-        if (IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_RIGHT))
-        {
-            b2Body_ApplyForceToCenter(bodyId, ForceDirection, true);
-        }
-
-        if (nk_begin(ctx, "My window", nk_rect(20, 75, 220, 220), 
+        if (nk_begin(ctx, "My window", nk_rect(20, 130, 220, 220), 
             NK_WINDOW_BORDER|NK_WINDOW_MINIMIZABLE|NK_WINDOW_MOVABLE))
         {
             nk_layout_row_static(ctx, 50, 160, 1);
             nk_label_colored(ctx, "This text is going crazy!!", NK_TEXT_ALIGN_LEFT, ColorToNuklear(randomColor));
+            if (nk_button_label(ctx, "Spawn Object"))
+            {
+                bodyCount++;
+                bodies[bodyCount] = CreateObject((b2Vec2){GetRandomValue(75, 1005), 0.0f}, worldId, (Vector2){50.0f, 50.0f}, b2_dynamicBody);
+            }
+
         }
         nk_end(ctx);
+
+        b2Vec2 UpdatedCirclePos = b2Body_GetPosition(EpicCircle);
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
         DrawBody(bodyId, bodySize, BLUE);
         DrawBody(floor, floorSize, GREEN);
         DrawBody(cube1, (Vector2){50.0f, 50.0f}, RED);
+        DrawCircle(UpdatedCirclePos.x, UpdatedCirclePos.y, cicleRadius, BLUE);
+        DrawRing(
+            (Vector2){UpdatedCirclePos.x, UpdatedCirclePos.y},
+            cicleRadius,
+            cicleRadius + 3,
+            0, 360,
+            64,
+            DARKGRAY
+        );
+
+        for (int i = 0; i < bodyCount; i++)
+        {
+            if (b2Body_IsValid(bodies[i]))
+            {
+                DrawBody(bodies[i], (Vector2){50.0f, 50.0f}, randCubeColor);
+            }
+        }
+
+        DrawText(TextFormat("Objects (+3): %d", bodyCount), 20, 75, 30, GRAY);
+        DrawFPS(20.0f, 20.0f);
         DrawNuklear(ctx);
         EndDrawing();
     }
 
-    // Unload Window and Nuklear GUI:
+    // Unload libs and stuff:
     CloseWindow();
     UnloadNuklear(ctx);
     b2DestroyWorld(worldId);
