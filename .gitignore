@@ -13,6 +13,7 @@ CMakeUserPresets.json
 .DS_Store
 .cache
 build
+build_web
 
 # nvim
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
