@@ -57,11 +57,9 @@ endif()
 
 # Web config
 if (EMSCRIPTEN)
-    set(CMAKE_EXECUTABLE_SUFFIX ".html")
-
-    target_link_options(${PROJECT_NAME} PRIVATE
-        "-sWASM=1"
-        "-sASYNCIFY"
-        "-sALLOW_MEMORY_GROWTH=1"
-    )
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Os")    
+	# Since WASM is used, ALLOW_MEMORY_GROWTH has no extra overheads
+	#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -sWASM=1 -sASYNCIFY -sALLOW_MEMORY_GROWTH=1 --shell-file ${CMAKE_SOURCE_DIR}/minshell.html")
+	set(CMAKE_EXECUTABLE_SUFFIX ".html")
+	target_link_options(game PROPERTIES LINK_FLAGS "--preload-file images@images -sWASM=1 -sASYNCIFY -sALLOW_MEMORY_GROWTH=1 --shell-file ${CMAKE_SOURCE_DIR}/minshell.html")
 endif()
