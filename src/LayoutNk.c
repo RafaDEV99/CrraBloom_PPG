@@ -1,5 +1,3 @@
-#include "box2d/id.h"
-#include "box2d/types.h"
 #include <raylib.h>
 #include <raymath.h>
 #include <box2d/box2d.h>
