@@ -29,7 +29,6 @@ FetchContent_Declare(
     raylib
     GIT_REPOSITORY https://github.com/raysan5/raylib.git
     GIT_TAG 5.5
-    GIT_SHALLOW TRUE
     GIT_PROGRESS TRUE
 )
 FetchContent_MakeAvailable(raylib)
@@ -45,7 +44,6 @@ if(BOX2D_TEST)
     	box2d
     	GIT_REPOSITORY https://github.com/erincatto/box2d.git
     	GIT_TAG main
-    	GIT_SHALLOW TRUE
     	GIT_PROGRESS TRUE
     )
     FetchContent_MakeAvailable(box2d)
