@@ -18,11 +18,12 @@ float delta = 0.0f;
 
 typedef struct 
 {
-    b2BodyId b2ID;
     b2BodyDef b2Def;
     Vector2 position;
     Vector2 size;
 } PhysicsObject;
+
+PhysicsObject SetPhysicsObject(Vector2 position, Vector2 size);
 
 b2BodyId CreateObject(b2Vec2 position, b2WorldId worldId, Vector2 size, b2BodyType type)
 {
