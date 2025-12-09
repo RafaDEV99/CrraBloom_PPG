@@ -19,7 +19,8 @@ float delta = 0.0f;
 
 typedef struct 
 {
-    b2BodyDef b2Def;
+    b2BodyDef Def;
+    b2BodyId Id;
     Vector2 position;
     Vector2 size;
 } PhysicsObject;
