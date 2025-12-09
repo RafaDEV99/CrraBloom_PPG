@@ -1,3 +1,4 @@
+#include "box2d/id.h"
 #include <raylib.h>
 #include <raymath.h>
 #include <box2d/box2d.h>
@@ -247,6 +248,7 @@ int main()
             }
             else
             {
+                bodyCount = 0.0f;
                 continue;
             }
         }
