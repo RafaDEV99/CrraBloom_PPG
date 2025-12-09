@@ -116,6 +116,7 @@ int main()
 
     int fontSize = FONT_SIZE;
     bool colorCicle = true;
+    bool drawAll = true;
 
     float time = 0.0f;
     int subStepCount = 6;
@@ -154,6 +155,19 @@ int main()
         {
             randCubeColor = (Color){GetRandomValue(0, 255), GetRandomValue(0, 255), GetRandomValue(0, 255), 255};
             time = 0.0f;
+        }
+
+        if (IsKeyPressed(KEY_R))
+        {
+            for (int i = 0; i < bodyCount; i++)
+            {
+                b2BodyId b = bodies[i];
+                if (b2Body_IsValid(b))
+                {
+                    b2DestroyBody(bodies[i]);
+                    bodies[i] = b2_nullBodyId;
+                }
+            }
         }
 
         switch (GetKeyPressed()) {
@@ -201,8 +215,8 @@ int main()
             nk_label_colored(ctx, "This text is going crazy!!", NK_TEXT_ALIGN_LEFT, ColorToNuklear(randomColor));
             if (nk_button_label(ctx, "Spawn Object"))
             {
-                bodyCount++;
                 bodies[bodyCount] = CreateObject((b2Vec2){GetRandomValue(75, 1005), 0.0f}, worldId, (Vector2){50.0f, 50.0f}, b2_dynamicBody);
+                bodyCount++;
             }
 
         }
@@ -218,8 +232,8 @@ int main()
         DrawCircle(UpdatedCirclePos.x, UpdatedCirclePos.y, cicleRadius, BLUE);
         DrawRing(
             (Vector2){UpdatedCirclePos.x, UpdatedCirclePos.y},
+            cicleRadius - 3.0f,
             cicleRadius,
-            cicleRadius + 3,
             0, 360,
             64,
             DARKGRAY
@@ -227,9 +241,13 @@ int main()
 
         for (int i = 0; i < bodyCount; i++)
         {
-            if (b2Body_IsValid(bodies[i]))
+            if (b2Body_IsValid(bodies[i]) && drawAll)
             {
                 DrawBody(bodies[i], (Vector2){50.0f, 50.0f}, randCubeColor);
+            }
+            else
+            {
+                continue;
             }
         }
 
