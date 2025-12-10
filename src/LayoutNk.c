@@ -17,7 +17,7 @@
 struct nk_context *ctx;
 float delta = 0.0f;
 
-typedef struct 
+typedef struct PhysicsObject
 {
     b2BodyDef Def;
     b2BodyId Id;
