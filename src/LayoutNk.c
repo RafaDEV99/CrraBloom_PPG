@@ -153,6 +153,7 @@ int main()
         b2World_Step(worldId, delta, subStepCount);
 
         printf("Time: %f\n", time);
+        printf("Counters: %d\n", b2World_GetCounters(worldId).bodyCount);
         if (time >= 0.5f)
         {
             randCubeColor = (Color){GetRandomValue(0, 255), GetRandomValue(0, 255), GetRandomValue(0, 255), 255};
@@ -234,7 +235,7 @@ int main()
         DrawCircle(UpdatedCirclePos.x, UpdatedCirclePos.y, cicleRadius, BLUE);
         DrawRing(
             (Vector2){UpdatedCirclePos.x, UpdatedCirclePos.y},
-            cicleRadius - 3.0f,
+            cicleRadius - 2.0f,
             cicleRadius,
             0, 360,
             64,
