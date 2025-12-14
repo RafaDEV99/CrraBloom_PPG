@@ -16,12 +16,12 @@
 
 struct nk_context *ctx;
 float delta = 0.0f;
+float gravity = 9.8f;
 
 typedef struct PhysicsObject
 {
     b2BodyDef Def;
     b2BodyId Id;
-    Vector2 position;
     Vector2 size;
 } PhysicsObject;
 
@@ -111,7 +111,7 @@ int main()
     SetTargetFPS(60);
 
     b2WorldDef worldDef = b2DefaultWorldDef();
-    worldDef.gravity.y = 9.8f * UNITS_PER_METER;
+    worldDef.gravity.y = gravity * UNITS_PER_METER;
 
     b2WorldId worldId = b2CreateWorld(&worldDef);
     b2SetLengthUnitsPerMeter(UNITS_PER_METER);
