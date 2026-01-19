@@ -1,220 +1,269 @@
-/**********************************
- *
- * CraBOOM engine THE epic physics program
- * Code by: @RafaDEV99
- * Alpha code
- *
- *********************************/
-
+#include "box2d/id.h"
 #include <raylib.h>
 #include <raymath.h>
-#include <stdbool.h>
+#include <box2d/box2d.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
-// External include (from the include folder :P)
-#define PHYSAC_IMPLEMENTATION
-#include "../Includes/physac.h"
+#define RAYLIB_NUKLEAR_IMPLEMENTATION
+#include <raylib-nuklear.h>
+#include <raylib-nuklear-font.h>
 
-// Gui Header files
-#define RAYGUI_IMPLEMENTATION
-#include "../Includes/raygui.h"
+#define WINDOW_WIDTH    1080
+#define WINDOW_HEIGHT   700
+#define FONT_SIZE       14
+#define UNITS_PER_METER 128.0f
 
-// NOTE: Add this later:
-// #define RAYLIB_NUKLEAR_IMPLEMENTATION
-// #include <raylib-nuklear.h>
-// #include <raylib-nuklear-font.h>
+struct nk_context *ctx;
+float delta = 0.0f;
+float gravity = 9.8f;
 
-// All defines and macros goes here
-#define WINDOW_WIDTH   1080
-#define WINDOW_HEIGHT  700
-#define WINDOW_TITLE   "CraBOOM engine - Raylib"
-
-#define GRAVITY_Y  9.8f
-#define GRAVITY_X  0.0f
-
-// Enums
-enum ObjectType
+typedef struct PhysicsObject
 {
-    RECTANGLE_BODY,
-    CIRCLE_BODY,
-    POLYGON_BODY,
-};
+    b2BodyDef Def;
+    b2BodyId Id;
+    Vector2 size;
+} PhysicsObject;
 
-// Global Values (Inseted boxes values also):
-int RectHeight = 40;
-int RectWidth = 40;
+PhysicsObject SetPhysicsObject(Vector2 position, Vector2 size);
 
-int circleRad = 20;
-
-int PolySides = 15;
-int PolyRadius = 15;
-
-int ValueGetX = 0;
-int ValueGetY = 0;
-
-PhysicsBody bodiesList[128] = { 0 };
-// TODO: Rectangle BodieRect[16] = { 0 };
-
-// Function yoinked from the Physac examples :3
-// This function draws the bodies
-void DrawCollisionWireFrames(int count)
+b2BodyId CreateObject(b2Vec2 position, b2WorldId worldId, Vector2 size, b2BodyType type)
 {
-    for (int i = 0; i < count; i++)
+    b2BodyDef def = b2DefaultBodyDef();
+    def.position = position;
+    def.type = type;
+
+    b2BodyId id = b2CreateBody(worldId, &def);
+
+    // Box extend
+    // NOTE: We multitplty by 0.5 if we want half the box (That is what we need)
+    b2Polygon box = b2MakeBox(size.x * 0.5f, size.y * 0.5f);
+    b2ShapeDef shapeDef = b2DefaultShapeDef();
+    shapeDef.material.restitution = 0.2f;
+
+    b2CreatePolygonShape(id, &shapeDef, &box);
+    b2Body_ApplyMassFromShapes(id);
+
+    return id;
+}
+
+b2BodyId CreateCircleObject(b2Vec2 position, b2WorldId worldId, int radius, b2BodyType type)
+{
+    b2BodyDef CircleBody = b2DefaultBodyDef();
+
+    CircleBody.position = position;
+    CircleBody.type = type;
+
+    b2BodyId CircleId = b2CreateBody(worldId, &CircleBody);
+    b2Circle circle = {{0.0f, 0.0f}, radius};
+    b2ShapeDef CircleShapeDef = b2DefaultShapeDef();
+
+    b2CreateCircleShape(CircleId, &CircleShapeDef, &circle);
+
+    return CircleId;
+}
+
+void DrawRotatedRectOutline(Vector2 center, Vector2 size, float angle, int borderThickness, Color color)
+{
+    Vector2 half = { size.x / 2, size.y / 2 };
+
+    Vector2 verts[4] = {
+        {-half.x, -half.y},
+        { half.x, -half.y},
+        { half.x,  half.y},
+        {-half.x,  half.y}
+    };
+
+    for (int i = 0; i < 4; i++)
     {
-        PhysicsBody body = GetPhysicsBody(i);
+        verts[i] = Vector2Rotate(verts[i], angle);
+        verts[i].x += center.x;
+        verts[i].y += center.y;
+    }
 
-        if (body != NULL)
-        {
-            int vertexCount = GetPhysicsShapeVerticesCount(i);
-            for (int j = 0; j < vertexCount; j++)
-            {
-                // Get physics bodies shape vertices to draw lines
-                // Note: GetPhysicsShapeVertex() already calculates rotation transformations
-                Vector2 vertexA = GetPhysicsShapeVertex(body, j);
-
-                int jj = (((j + 1) < vertexCount) ? (j + 1) : 0);   // Get next vertex or first to close the shape
-                Vector2 vertexB = GetPhysicsShapeVertex(body, jj);
-
-                DrawLineV(vertexA, vertexB, DARKGRAY);     // Draw a line between two vertex positions
-            }
-        }
-
+    for (int i = 0; i < 4; i++)
+    {
+        DrawLineEx(verts[i], verts[(i + 1) % 4], borderThickness, color);
     }
 }
 
-const char* GetBodyTypeName(int bodyIndex)
+void DrawBody(b2BodyId id, Vector2 size, Color color)
 {
-    switch (bodyIndex) 
-    {
-        case RECTANGLE_BODY:
-            return "Rectangle";
-        case CIRCLE_BODY:
-            return "Circle";
-        case POLYGON_BODY:
-            return "Polygon";
-        default:
-            return "MissingNo";
-            break;
-    }
-}
+    b2Vec2 pos = b2Body_GetPosition(id);
+    int borderSize = 2;
+    b2Vec2 Ppos = b2Body_GetWorldPoint(id, (b2Vec2){-size.x * 0.5f, -size.y * 0.5f});
+    b2Vec2 Bextend = {size.x * 0.5f, size.y * 0.5f};
+    float angle = b2Rot_GetAngle(b2Body_GetRotation(id));
 
-bool editVal = true;
-bool editValueY = true;
+    DrawRectanglePro(
+        (Rectangle){pos.x, pos.y, size.x, size.y},
+        (Vector2){Bextend.x, Bextend.y},
+        angle * RAD2DEG,
+        color
+    );
+
+    DrawRotatedRectOutline((Vector2){pos.x, pos.y}, (Vector2){size.x, size.y}, angle, borderSize, DARKGRAY);
+}
 
 int main()
 {
-    // Initialization functions
-    // SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-    InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
-    InitPhysics();
+    InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "CrraBloom Simulator!");
     SetTargetFPS(60);
 
-    // NOTE: Init varibles
-    float delta;
-    bool buttonFlag = false;
+    b2WorldDef worldDef = b2DefaultWorldDef();
+    worldDef.gravity.y = gravity * UNITS_PER_METER;
 
-    
-    bool DropEdit = false; // <-- Drop down menu 1
-    int ValueDrop = RECTANGLE_BODY;
+    b2WorldId worldId = b2CreateWorld(&worldDef);
+    b2SetLengthUnitsPerMeter(UNITS_PER_METER);
 
-    int GetDencity = 0;
-    int BodiesCount = 0;
+    int fontSize = FONT_SIZE;
+    bool colorCicle = true;
+    bool drawAll = true;
 
-    // Main booleans:
-    bool editValX = false;
-    bool editValY = false;
+    float time = 0.0f;
+    int subStepCount = 6;
 
-    bool dencityEdit = false;
+    b2Vec2 ForceDirection = {-100000000.0f, 0.0f};
+    float forcePower = 100000000.0f;
+    int cicleRadius = 25.0f;
 
-    float gravityX = 0.0f;
-    float gravityY = 0.0f;
+    b2Vec2 CirclePos = {540.0f, 70.0f};
 
-    Vector2 MousePosition = { 0.0f, 0.0f };
+    Vector2 bodySize = {50.0f, 50.0f};
+    Vector2 floorSize = {540.0f, 50.0f};
+    b2BodyId EpicCircle = CreateCircleObject(CirclePos, worldId, cicleRadius, b2_dynamicBody);
+    b2BodyId bodyId = CreateObject((b2Vec2){540, 200}, worldId, bodySize, b2_dynamicBody);
+    b2BodyId cube1 = CreateObject((b2Vec2){540, 100}, worldId, (Vector2){50.0f, 50.0f}, b2_dynamicBody);
+    b2BodyId floor = CreateObject((b2Vec2){540, 500}, worldId, floorSize, b2_staticBody);
+    b2BodyId bodies[1000] = {0};
 
-    while (!WindowShouldClose()) 
-    {
-        // Update
+    bool hasBody = false;
+    int bodyCount = 0;
+
+    Color randCubeColor;
+
+    ctx = InitNuklear(fontSize);
+    Color randomColor;
+
+    while (!WindowShouldClose()) {
+
         delta = GetFrameTime();
-        BodiesCount = GetPhysicsBodiesCount();
-        MousePosition = GetMousePosition();
-        SetPhysicsGravity(GRAVITY_X, GRAVITY_Y);
+        time += delta;
+        UpdateNuklear(ctx);
+        b2World_Step(worldId, delta, subStepCount);
 
-        if (IsKeyPressed(KEY_D))
+        printf("Time: %f\n", time);
+        printf("Counters: %d\n", b2World_GetCounters(worldId).bodyCount);
+        if (time >= 0.5f)
         {
-            for (int i = 0; i < BodiesCount; i++)
+            randCubeColor = (Color){GetRandomValue(0, 255), GetRandomValue(0, 255), GetRandomValue(0, 255), 255};
+            time = 0.0f;
+        }
+
+        if (IsKeyPressed(KEY_R))
+        {
+            for (int i = 0; i < bodyCount; i++)
             {
-                DestroyPhysicsBody(bodiesList[i]);
+                b2BodyId b = bodies[i];
+                if (b2Body_IsValid(b))
+                {
+                    b2DestroyBody(bodies[i]);
+                    bodies[i] = b2_nullBodyId;
+                }
             }
         }
 
+        switch (GetKeyPressed()) {
+            case KEY_LEFT:
+                ForceDirection = (b2Vec2){-forcePower, 0.0f};
+                break;
+            case KEY_RIGHT:
+                ForceDirection = (b2Vec2){forcePower, 0.0f};
+                break;
+            case KEY_SPACE:
+                ForceDirection = (b2Vec2){0.0f, -forcePower};
+                break;
+            default:
+                break;
+        }
+
+        if (IsKeyDown(KEY_SPACE) || IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_RIGHT))
+        {
+            b2Body_ApplyForceToCenter(bodyId, ForceDirection, true);
+        }
+
+        switch (GetKeyPressed()) {
+            case KEY_LEFT:
+                ForceDirection = (b2Vec2){-forcePower, 0.0f};
+                break;
+            case KEY_RIGHT:
+                ForceDirection = (b2Vec2){forcePower, 0.0f};
+                break;
+            case KEY_SPACE:
+                ForceDirection = (b2Vec2){0.0f, -forcePower};
+                break;
+            default:
+                break;
+        }
+
+        if (IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_RIGHT))
+        {
+            b2Body_ApplyForceToCenter(bodyId, ForceDirection, true);
+        }
+
+        if (nk_begin(ctx, "My window", nk_rect(20, 130, 220, 220), 
+            NK_WINDOW_BORDER|NK_WINDOW_MINIMIZABLE|NK_WINDOW_MOVABLE))
+        {
+            nk_layout_row_static(ctx, 50, 160, 1);
+            nk_label_colored(ctx, "This text is going crazy!!", NK_TEXT_ALIGN_LEFT, ColorToNuklear(randomColor));
+            if (nk_button_label(ctx, "Spawn Object"))
+            {
+                bodies[bodyCount] = CreateObject((b2Vec2){GetRandomValue(75, 1005), 0.0f}, worldId, (Vector2){50.0f, 50.0f}, b2_dynamicBody);
+                bodyCount++;
+            }
+
+        }
+        nk_end(ctx);
+
+        b2Vec2 UpdatedCirclePos = b2Body_GetPosition(EpicCircle);
+
         BeginDrawing();
-            ClearBackground(RAYWHITE);
-            DrawText("CraBOOM engine - Alpha 2", 10, 40, 20, DARKGRAY);
-            DrawText("Press ESC to exit", 300, 40, 20, DARKGRAY);
-            DrawText(TextFormat("Bodies: %d", BodiesCount), 950, 10, 20, DARKGRAY);
-            DrawFPS(10, 10);
-            DrawCollisionWireFrames(BodiesCount);
-            if (GuiButton((Rectangle){10, 90, 120, 50}, "#8#add body"))
+        ClearBackground(RAYWHITE);
+        DrawBody(bodyId, bodySize, BLUE);
+        DrawBody(floor, floorSize, GREEN);
+        DrawBody(cube1, (Vector2){50.0f, 50.0f}, RED);
+        DrawCircle(UpdatedCirclePos.x, UpdatedCirclePos.y, cicleRadius, BLUE);
+        DrawRing(
+            (Vector2){UpdatedCirclePos.x, UpdatedCirclePos.y},
+            cicleRadius - 2.0f,
+            cicleRadius,
+            0, 360,
+            64,
+            DARKGRAY
+        );
+
+        for (int i = 0; i < bodyCount; i++)
+        {
+            if (b2Body_IsValid(bodies[i]) && drawAll)
             {
-                buttonFlag = !buttonFlag;
+                DrawBody(bodies[i], (Vector2){50.0f, 50.0f}, randCubeColor);
             }
-
-            if (buttonFlag == true)
+            else
             {
-                if (GuiWindowBox((Rectangle){10, 170, 300, 300}, "Body Creation"))
-                {
-                    buttonFlag = !buttonFlag;
-                }
-
-                // Gui Value boxes layer
-                if (GuiValueBox((Rectangle){30, 270, 120, 40}, "x ", &ValueGetX, 0, WINDOW_WIDTH, editValX))
-                    editValX = !editValX;
-                if (GuiValueBox((Rectangle){170, 270, 120, 40}, "y ", &ValueGetY, 0, WINDOW_HEIGHT, editValY))
-                    editValY = !editValY;
-                if (GuiValueBox((Rectangle){30, 330, 120, 40}, " ", &GetDencity, 0.0f, 500.0f, dencityEdit))
-                    dencityEdit = !dencityEdit;
-                if (GuiDropdownBox((Rectangle){30, 210, 120, 40}, "Rectangle;Circle;Polygon", &ValueDrop, DropEdit))
-                    DropEdit = !DropEdit;
-
-                GuiLabel((Rectangle){165, 335, 60, 25}, "<-- Dencity");
-
-                if (GuiButton((Rectangle){30, 390, 120, 50}, "CREATE!!!")) // <-- If the button is true do the next:
-                {
-                    PhysicsBody newBody;
-                    Vector2 BVector = {ValueGetX, ValueGetY}; // <-- Body Vector int
-
-                    // Create a body based on the value of the drop down menu
-                    switch (ValueDrop) 
-                    {
-                        case RECTANGLE_BODY:
-                            newBody = CreatePhysicsBodyRectangle(BVector, RectWidth, RectHeight, GetDencity);
-                            ValueGetX = newBody->position.x;
-                            ValueGetY = newBody->position.y;
-                            break;
-                        case CIRCLE_BODY:
-                            newBody = CreatePhysicsBodyCircle(BVector, circleRad, GetDencity);
-                            break;
-                        case POLYGON_BODY:
-                            newBody = CreatePhysicsBodyPolygon(BVector, PolyRadius, PolySides, GetDencity);
-                            break;
-                        default:
-                            break;
-                    }
-
-                    if (newBody != NULL)
-                        bodiesList[BodiesCount] = newBody;
-
-                }
-
+                bodyCount = 0.0f;
+                continue;
             }
-            
+        }
+
+        DrawText(TextFormat("Objects (+3): %d", bodyCount), 20, 75, 30, GRAY);
+        DrawFPS(20.0f, 20.0f);
+        DrawNuklear(ctx);
         EndDrawing();
     }
-    
-    // Memory liveration
-    ClosePhysics();
+
+    // Unload libs and stuff:
     CloseWindow();
+    UnloadNuklear(ctx);
+    b2DestroyWorld(worldId);
     return 0;
 }
