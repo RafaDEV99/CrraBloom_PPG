@@ -1,4 +1,5 @@
 #include "box2d/id.h"
+#include "box2d/types.h"
 #include <raylib.h>
 #include <raymath.h>
 #include <rlgl.h>
@@ -24,9 +25,20 @@ typedef struct PhysicsObject
     b2BodyDef Def;
     b2BodyId Id;
     Vector2 size;
+    Vector2 position;
 } PhysicsObject;
 
-PhysicsObject SetPhysicsObject(Vector2 position, Vector2 size);
+PhysicsObject CreatePhysicsObject(Vector2 position, Vector2 size, b2BodyType bodyType)
+{
+    // Created a PhysicsObject type (The rest of the values are avilable)
+    PhysicsObject object;
+    object.size = size;
+    object.position = position;
+    object.Def.position = (b2Vec2){object.position.x, object.position.y};
+    object.Def.type = bodyType;
+
+    return object;
+}
 
 b2BodyId CreateObject(b2Vec2 position, b2WorldId worldId, Vector2 size, b2BodyType type)
 {
@@ -131,7 +143,7 @@ int main()
     b2Vec2 CirclePos = {540.0f, 70.0f};
 
     Vector2 bodySize = {50.0f, 50.0f};
-    Vector2 floorSize = {540.0f, 50.0f};
+    Vector2 floorSize = {540.0f, 100.0f};
     b2BodyId EpicCircle = CreateCircleObject(CirclePos, worldId, cicleRadius, b2_dynamicBody);
     b2BodyId bodyId = CreateObject((b2Vec2){540, 200}, worldId, bodySize, b2_dynamicBody);
     b2BodyId cube1 = CreateObject((b2Vec2){540, 100}, worldId, (Vector2){50.0f, 50.0f}, b2_dynamicBody);
@@ -145,7 +157,7 @@ int main()
     Vector2 TestVector = {300.0f, 200.0f};
 
     ctx = InitNuklear(fontSize);
-    Color randomColor;
+    PhysicsObject object;
 
     while (!WindowShouldClose()) {
 
@@ -213,11 +225,11 @@ int main()
             b2Body_ApplyForceToCenter(bodyId, ForceDirection, true);
         }
 
-        if (nk_begin(ctx, "My window", nk_rect(20, 130, 220, 220), 
+        if (nk_begin(ctx, "Body spawn control", nk_rect(20, 130, 220, 220), 
             NK_WINDOW_BORDER|NK_WINDOW_MINIMIZABLE|NK_WINDOW_MOVABLE))
         {
             nk_layout_row_static(ctx, 50, 160, 1);
-            nk_label_colored(ctx, "This text is going crazy!!", NK_TEXT_ALIGN_LEFT, ColorToNuklear(randomColor));
+            nk_label(ctx, "Body spawn menu!", NK_TEXT_CENTERED);
             if (nk_button_label(ctx, "Spawn Object"))
             {
                 bodies[bodyCount] = CreateObject((b2Vec2){GetRandomValue(75, 1005), 0.0f}, worldId, (Vector2){50.0f, 50.0f}, b2_dynamicBody);
