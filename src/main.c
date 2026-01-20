@@ -1,6 +1,7 @@
 #include "box2d/id.h"
 #include <raylib.h>
 #include <raymath.h>
+#include <rlgl.h>
 #include <box2d/box2d.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -141,6 +142,8 @@ int main()
     int bodyCount = 0;
 
     Color randCubeColor;
+    float angle = 0;
+    Vector2 TestVector = {300.0f, 200.0f};
 
     ctx = InitNuklear(fontSize);
     Color randomColor;
@@ -151,6 +154,7 @@ int main()
         time += delta;
         UpdateNuklear(ctx);
         b2World_Step(worldId, delta, subStepCount);
+        angle += 10.0f;
 
         printf("Time: %f\n", time);
         printf("Counters: %d\n", b2World_GetCounters(worldId).bodyCount);
@@ -258,6 +262,14 @@ int main()
         DrawText(TextFormat("Objects (+3): %d", bodyCount), 20, 75, 30, GRAY);
         DrawFPS(20.0f, 20.0f);
         DrawNuklear(ctx);
+
+        rlPushMatrix();
+        rlTranslatef(TestVector.x, TestVector.y, 0.0f);
+        rlRotatef(angle, 0.0f, 0.0f, 1.0f);       // Rotation for Earth itself
+
+        DrawRectangleLines(0.0f, 0.0f, 40, 40, DARKGRAY);
+        rlPopMatrix();
+
         EndDrawing();
     }
 
