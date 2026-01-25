@@ -1,3 +1,4 @@
+#include "box2d/collision.h"
 #include "box2d/id.h"
 #include "box2d/types.h"
 #include <raylib.h>
@@ -28,14 +29,27 @@ typedef struct PhysicsObject
     Vector2 position;
 } PhysicsObject;
 
-PhysicsObject CreatePhysicsObject(Vector2 position, Vector2 size, b2BodyType bodyType)
+enum PhysicsShapes
+{
+    REACTANGLE_SHAPE,
+    CIRCLE_SHAPE,
+};
+
+PhysicsObject CreatePhysicsObject(Vector2 position, Vector2 size, b2BodyType bodyType, b2WorldId world)
 {
     // Created a PhysicsObject type (The rest of the values are avilable)
     PhysicsObject object;
+
+    object.Def = b2DefaultBodyDef();
+
     object.size = size;
     object.position = position;
     object.Def.position = (b2Vec2){object.position.x, object.position.y};
     object.Def.type = bodyType;
+
+    object.Id = b2CreateBody(world, &object.Def);
+
+    b2Polygon shape;
 
     return object;
 }
@@ -118,6 +132,16 @@ void DrawBody(b2BodyId id, Vector2 size, Color color)
     DrawRotatedRectOutline((Vector2){pos.x, pos.y}, (Vector2){size.x, size.y}, angle, borderSize, DARKGRAY);
 }
 
+void DrawCapsule2D(Vector2 start, Vector2 end, float radius, float rotation, Color color)
+{
+    DrawCircleV(start, radius, color);
+    DrawCircleV(end, radius, color);
+
+    DrawLineEx(start, end, radius * 2.0f, color);
+}
+
+void DrawCapsule2dWires(Vector2 start, Vector2 end, int diameter, float rotation, Color color);
+
 int main()
 {
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "CrraBloom Simulator!");
@@ -158,6 +182,8 @@ int main()
 
     ctx = InitNuklear(fontSize);
     PhysicsObject object;
+
+    float rotate = 0.0f;
 
     while (!WindowShouldClose()) {
 
@@ -269,8 +295,18 @@ int main()
             }
         }
 
+        rotate -= 10;
+
         DrawText(TextFormat("Objects (+3): %d", bodyCount), 20, 75, 30, GRAY);
+        DrawCapsule2D((Vector2){300, 200}, (Vector2){300, 290}, 20, rotate, BLUE);
         DrawFPS(20.0f, 20.0f);
+
+        // Capsule parameters
+        Vector2 start = { 400, 150 }; // Top circle center
+        Vector2 end = { 400, 180 };   // Bottom circle center
+        float diameter = 20.0f;       // Capsule width
+
+
         DrawNuklear(ctx);
 
         EndDrawing();
