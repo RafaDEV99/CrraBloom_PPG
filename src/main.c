@@ -94,24 +94,14 @@ void DrawRotatedRectOutline(Vector2 center, Vector2 size, float angle, int borde
 {
     Vector2 half = { size.x / 2, size.y / 2 };
 
-    Vector2 verts[4] = {
-        {-half.x, -half.y},
-        { half.x, -half.y},
-        { half.x,  half.y},
-        {-half.x,  half.y}
-    };
+    Rectangle wireRect = {-half.x, -half.y, size.x, size.y};
 
-    for (int i = 0; i < 4; i++)
-    {
-        verts[i] = Vector2Rotate(verts[i], angle);
-        verts[i].x += center.x;
-        verts[i].y += center.y;
-    }
+    rlPushMatrix();
+    rlTranslatef(center.x, center.y, 0);
+    rlRotatef(angle * RAD2DEG, 0, 0, 1);
+    DrawRectangleLinesEx(wireRect, borderThickness, color);
+    rlPopMatrix();
 
-    for (int i = 0; i < 4; i++)
-    {
-        DrawLineEx(verts[i], verts[(i + 1) % 4], borderThickness, color);
-    }
 }
 
 void DrawBody(b2BodyId id, Vector2 size, Color color)
