@@ -29,30 +29,25 @@ typedef struct PhysicsObject
     Vector2 position;
 } PhysicsObject;
 
-enum PhysicsShapes
-{
-    REACTANGLE_SHAPE,
-    CIRCLE_SHAPE,
-};
-
-PhysicsObject CreatePhysicsObject(Vector2 position, Vector2 size, b2BodyType bodyType, b2WorldId world)
-{
-    // Created a PhysicsObject type (The rest of the values are avilable)
-    PhysicsObject object;
-
-    object.Def = b2DefaultBodyDef();
-
-    object.size = size;
-    object.position = position;
-    object.Def.position = (b2Vec2){object.position.x, object.position.y};
-    object.Def.type = bodyType;
-
-    object.Id = b2CreateBody(world, &object.Def);
-
-    b2Polygon shape;
-
-    return object;
-}
+// NOTE: Temp:
+// PhysicsObject CreatePhysicsObject(Vector2 position, Vector2 size, b2BodyType bodyType, b2WorldId world)
+// {
+//     // Created a PhysicsObject type (The rest of the values are avilable)
+//     PhysicsObject object;
+//
+//     object.Def = b2DefaultBodyDef();
+//
+//     object.size = size;
+//     object.position = position;
+//     object.Def.position = (b2Vec2){object.position.x, object.position.y};
+//     object.Def.type = bodyType;
+//
+//     object.Id = b2CreateBody(world, &object.Def);
+//
+//     b2Polygon shape;
+//
+//     return object;
+// }
 
 b2BodyId CreateObject(b2Vec2 position, b2WorldId worldId, Vector2 size, b2BodyType type)
 {
