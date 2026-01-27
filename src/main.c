@@ -246,7 +246,6 @@ int main()
                 bodies[bodyCount] = CreateObject((b2Vec2){GetRandomValue(75, 1005), 0.0f}, worldId, (Vector2){50.0f, 50.0f}, b2_dynamicBody);
                 bodyCount++;
             }
-
         }
         nk_end(ctx);
 
