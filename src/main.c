@@ -9,17 +9,20 @@
 #include <stdlib.h>
 
 #define RAYLIB_NUKLEAR_IMPLEMENTATION
+#define NK_INCLUDE_DEFAULT_FONT
 #include <raylib-nuklear.h>
 #include <raylib-nuklear-font.h>
 
 #define WINDOW_WIDTH    1080
 #define WINDOW_HEIGHT   700
-#define FONT_SIZE       14
+#define FONT_SIZE       17
 #define UNITS_PER_METER 128.0f
 
 struct nk_context *ctx;
 float delta = 0.0f;
 float gravity = 9.8f;
+
+Font defFont;
 
 typedef struct PhysicsObject
 {
@@ -142,6 +145,16 @@ int main()
     bool colorCicle = true;
     bool drawAll = true;
 
+    nk_rune nerd_icon_ranges[] = {
+        0x0020, 0x007E,    // ASCII & basic text
+        0xE000, 0xF8FF,    // Private Use Area (Nerd icons)
+        0
+    };
+
+    struct nk_font * icons;
+    struct nk_font_atlas  *atlas_icon;
+    defFont = LoadFontEx("../fonts/JetBrainsMonoNerdFont-Regular.ttf", fontSize, NULL, 0);
+
     float time = 0.0f;
     int subStepCount = 6;
 
@@ -165,7 +178,7 @@ int main()
     Color randCubeColor;
     Vector2 TestVector = {300.0f, 200.0f};
 
-    ctx = InitNuklear(fontSize);
+    ctx = InitNuklearEx(defFont, fontSize);
     PhysicsObject object;
 
     float rotate = 0.0f;
@@ -240,7 +253,7 @@ int main()
             NK_WINDOW_BORDER|NK_WINDOW_MINIMIZABLE|NK_WINDOW_MOVABLE))
         {
             nk_layout_row_static(ctx, 50, 160, 1);
-            nk_label(ctx, "Body spawn menu!", NK_TEXT_CENTERED);
+            nk_label(ctx, "\xef\x90\x98 Branch \xee\x90\x8d", NK_TEXT_CENTERED);
             if (nk_button_label(ctx, "Spawn Object"))
             {
                 bodies[bodyCount] = CreateObject((b2Vec2){GetRandomValue(75, 1005), 0.0f}, worldId, (Vector2){50.0f, 50.0f}, b2_dynamicBody);
@@ -279,8 +292,6 @@ int main()
             }
         }
 
-        rotate -= 10;
-
         DrawText(TextFormat("Objects (+3): %d", bodyCount), 20, 75, 30, GRAY);
         DrawCapsule2D((Vector2){300, 200}, (Vector2){300, 290}, 20, rotate, BLUE);
         DrawFPS(20.0f, 20.0f);
@@ -290,7 +301,6 @@ int main()
         Vector2 end = { 400, 180 };   // Bottom circle center
         float diameter = 20.0f;       // Capsule width
 
-
         DrawNuklear(ctx);
 
         EndDrawing();
@@ -299,6 +309,7 @@ int main()
     // Unload libs and stuff:
     CloseWindow();
     UnloadNuklear(ctx);
+    UnloadFont(defFont);
     b2DestroyWorld(worldId);
     return 0;
 }
