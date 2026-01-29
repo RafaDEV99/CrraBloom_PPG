@@ -8,20 +8,14 @@ int main() {
 
     // 1. Cargar la fuente con iconos usando raylib (por ejemplo, FontAwesome)
     // Nota: Debes tener el archivo .ttf en tu carpeta de proyecto.
+    //
 
-    int ranges_icons[] = {
-        0x0049, 0x004A,
-        0xF07C, 0xF07C,	/*   */
-        0xF083, 0xF083,	/*   */
-        0xF0AD, 0xF0AD,	/*   */
-        0xF021, 0xF021,	/*   */
-        0
-    };
-
-    // int ranges_icons[] = { 0x0020, 0x007F, 0xF07C, 0xF07C, 0xF083, 0xF083, 0xF0AD, 0xF0AD, 0xF021, 0xF021, 0 };
+    int codepoints[512];
+    for (int i = 0; i < 95; i++) codepoints[i] = 32 + i;        // ASCII (32 a 126)
+    for (int i = 0; i < 400; i++) codepoints[95 + i] = 0xf000 + i; // Iconos (f000 en adelante)
 
     float fontSize = 10.0f;
-    Font iconFont = LoadFont("../fonts/Font Awesome 7 Free-Solid-900.otf");
+    Font iconFont = LoadFontEx("../fonts/Font Awesome 7 Free-Solid-900.otf", 20, codepoints, 495);
     struct nk_font_atlas *atlas;
 
     // 2. Inicializar Nuklear con la fuente cargada en lugar de la predeterminada
@@ -39,10 +33,10 @@ int main() {
             // 3. Usar los iconos en botones o etiquetas
             // En Nuklear, puedes pasar el carácter UTF-8 del icono [3]
             // (Ejemplo simbólico: "\uf015" suele ser un icono de 'Inicio')
-            if (nk_button_label(ctx, " ")) {
+            if (nk_button_label(ctx, "\uf0c7")) {
                 // Acción al presionar el icono 1
             }
-            if (nk_button_label(ctx, "wdswsw")) {
+            if (nk_button_label(ctx, "test")) {
                 // Acción al presionar el icono 2 (Configuración)
             }
             if (nk_button_label(ctx, "")) {
@@ -50,13 +44,13 @@ int main() {
             }
         }
         nk_end(ctx);
-        printf("%d\n", GetCodepointCount("Hellow, is me!!  "));
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
         
         // Renderizar la interfaz con la fuente de iconos [1]
         DrawNuklear(ctx);
+        DrawTexture(iconFont.texture, 0, 0, DARKGRAY);
 
         EndDrawing();
     }
