@@ -3,6 +3,13 @@
 #define RAYLIB_NUKLEAR_IMPLEMENTATION
 #include "raylib-nuklear.h"
 
+void GetAllCodepoints(int codepoints[])
+{
+    for (int i = 0; i < 95; i++)
+        codepoints[i] = 32 + i;
+    for (int i = 0; i < 400; i++) codepoints[95 + i] = 0xf000 + i;
+}
+
 int main() {
     InitWindow(640, 480, "Interfaz con Iconos");
 
@@ -11,12 +18,10 @@ int main() {
     //
 
     int codepoints[512];
-    for (int i = 0; i < 95; i++) codepoints[i] = 32 + i;        // ASCII (32 a 126)
-    for (int i = 0; i < 400; i++) codepoints[95 + i] = 0xf000 + i; // Iconos (f000 en adelante)
+    GetAllCodepoints(codepoints);
 
-    float fontSize = 10.0f;
-    Font iconFont = LoadFontEx("../fonts/Font Awesome 7 Free-Solid-900.otf", 20, codepoints, 495);
-    struct nk_font_atlas *atlas;
+    float fontSize = 15.0f;
+    Font iconFont = LoadFontEx("../fonts/JetBrainsMonoNerdFont-Regular.ttf", fontSize, codepoints, 495);
 
     // 2. Inicializar Nuklear con la fuente cargada en lugar de la predeterminada
     // Se usa InitNuklearEx para pasar una estructura Font de raylib [1, 2]
@@ -39,7 +44,7 @@ int main() {
             if (nk_button_label(ctx, "test")) {
                 // Acción al presionar el icono 2 (Configuración)
             }
-            if (nk_button_label(ctx, "")) {
+            if (nk_button_label(ctx, "  ")) {
                 // Acción al presionar el icono 3 (Usuario)
             }
         }
@@ -50,7 +55,6 @@ int main() {
         
         // Renderizar la interfaz con la fuente de iconos [1]
         DrawNuklear(ctx);
-        DrawTexture(iconFont.texture, 0, 0, DARKGRAY);
 
         EndDrawing();
     }
