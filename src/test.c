@@ -20,8 +20,8 @@ int main() {
     int codepoints[512];
     GetAllCodepoints(codepoints);
 
-    float fontSize = 15.0f;
-    Font iconFont = LoadFontEx("../fonts/JetBrainsMonoNerdFont-Regular.ttf", fontSize, codepoints, 495);
+    float fontSize = 10.0f;
+    Font iconFont = LoadFontEx("../fonts/Font Awesome 7 Free-Solid-900.otf", fontSize, codepoints, 495);
 
     // 2. Inicializar Nuklear con la fuente cargada en lugar de la predeterminada
     // Se usa InitNuklearEx para pasar una estructura Font de raylib [1, 2]
