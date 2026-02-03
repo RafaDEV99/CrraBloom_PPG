@@ -3,7 +3,7 @@
 #define RAYLIB_NUKLEAR_IMPLEMENTATION
 #include "raylib-nuklear.h"
 
-void GetAllCodepoints(int codepoints[])
+void GetAllCodepoints(int codepoints[512])
 {
     for (int i = 0; i < 95; i++)
         codepoints[i] = 32 + i;
