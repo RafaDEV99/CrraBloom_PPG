@@ -4,7 +4,7 @@ project(CrraBloom)
 
 # Crete the export command file
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CFILE_PATH "src/test.c")
+set(CFILE_PATH "src/wave.c")
 
 # Custon flags:
 option(BOX2D_TEST "Added box2d!" OFF)
