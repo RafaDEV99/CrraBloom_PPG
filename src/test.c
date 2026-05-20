@@ -3,19 +3,10 @@
 #define RAYLIB_NUKLEAR_IMPLEMENTATION
 #include "raylib-nuklear.h"
 
-void GetAllCodepoints(int codepoints[512])
-{
-    for (int i = 0; i < 95; i++)
-        codepoints[i] = 32 + i;
-    for (int i = 0; i < 400; i++) codepoints[95 + i] = 0xf000 + i;
-}
+#include <../resources/rayextra.h>
 
 int main() {
     InitWindow(640, 480, "Interfaz con Iconos");
-
-    // 1. Cargar la fuente con iconos usando raylib (por ejemplo, FontAwesome)
-    // Nota: Debes tener el archivo .ttf en tu carpeta de proyecto.
-    //
 
     int codepoints[512];
     GetAllCodepoints(codepoints);

@@ -7,6 +7,7 @@
 #include <box2d/box2d.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <../resources/rayextra.h>
 
 #define RAYLIB_NUKLEAR_IMPLEMENTATION
 #define NK_INCLUDE_DEFAULT_FONT
@@ -15,14 +16,13 @@
 
 #define WINDOW_WIDTH    1080
 #define WINDOW_HEIGHT   700
-#define FONT_SIZE       17
+#define FONT_SIZE       20
 #define UNITS_PER_METER 128.0f
 
 struct nk_context *ctx;
 float delta = 0.0f;
 float gravity = 9.8f;
 
-Font defFont;
 
 typedef struct PhysicsObject
 {
@@ -134,6 +134,8 @@ int main()
 {
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "CrraBloom Simulator!");
     SetTargetFPS(60);
+    int test = 0;
+
 
     b2WorldDef worldDef = b2DefaultWorldDef();
     worldDef.gravity.y = gravity * UNITS_PER_METER;
@@ -145,15 +147,10 @@ int main()
     bool colorCicle = true;
     bool drawAll = true;
 
-    nk_rune nerd_icon_ranges[] = {
-        0x0020, 0x007E,    // ASCII & basic text
-        0xE000, 0xF8FF,    // Private Use Area (Nerd icons)
-        0
-    };
+    int fontCodepoints[512];
+    GetAllCodepoints(fontCodepoints);
 
-    struct nk_font * icons;
-    struct nk_font_atlas  *atlas_icon;
-    defFont = LoadFontEx("../fonts/JetBrainsMonoNerdFont-Regular.ttf", fontSize, NULL, 0);
+    Font defFont = LoadFontEx("../fonts/JetBrainsMonoNerdFont-Regular.ttf", fontSize, fontCodepoints, 495);
 
     float time = 0.0f;
     int subStepCount = 6;
@@ -253,12 +250,13 @@ int main()
             NK_WINDOW_BORDER|NK_WINDOW_MINIMIZABLE|NK_WINDOW_MOVABLE))
         {
             nk_layout_row_static(ctx, 50, 160, 1);
-            nk_label(ctx, "\xef\x90\x98 Branch \xee\x90\x8d", NK_TEXT_CENTERED);
+            nk_label(ctx, " Branch \xee\x90\x8d", NK_TEXT_CENTERED);
             if (nk_button_label(ctx, "Spawn Object"))
             {
                 bodies[bodyCount] = CreateObject((b2Vec2){GetRandomValue(75, 1005), 0.0f}, worldId, (Vector2){50.0f, 50.0f}, b2_dynamicBody);
                 bodyCount++;
             }
+            nk_slide_int(ctx, 0, test, 45, 1);
         }
         nk_end(ctx);
 
