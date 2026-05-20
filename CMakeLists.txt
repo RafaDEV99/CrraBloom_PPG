@@ -4,10 +4,10 @@ project(CrraBloom)
 
 # Crete the export command file
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CFILE_PATH "src/test.c")
+set(CFILE_PATH "src/main.c")
 
 # Custon flags:
-option(BOX2D_TEST "Added box2d!" OFF)
+option(BOX2D_TEST "Added box2d!" ON)
 option(SANITIZERS "Added Sanitizers" OFF)
 
 # NOTE: Add a SANITIZERS flag if you want sanitizers for debuging and else
@@ -51,7 +51,8 @@ if(BOX2D_TEST)
     message("Added Box2D!, remember that this flag is a test and later will be gone.")
 else()
     message(STATUS "Box2D flag not set — only using Raylib.")
-endif()
+endif(BOX2D_TEST)
+unset(BOX2D_TEST)
 
 # Web config
 if (EMSCRIPTEN)
